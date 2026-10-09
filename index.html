@@ -6,18 +6,6 @@
 <meta name="robots" content="noindex, nofollow">
 <style>html{-webkit-text-size-adjust:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>북수원자이렉스비아 보안대원 근무 매뉴얼</title>
-<meta property="og:type" content="website">
-<meta property="og:locale" content="ko_KR">
-<meta property="og:title" content="북수원자이렉스비아 보안대원 근무 매뉴얼">
-<meta property="og:description" content="처음 근무하는 대원도 쉽게 확인하는 현장 업무 안내서. 시간별 업무, 상황별 대응, 인수인계, 긴급상황.">
-<meta property="og:url" content="https://p01056310076-alt.github.io/guard-work-manual/">
-<meta property="og:image" content="https://p01056310076-alt.github.io/guard-work-manual/kakao_cover_1x1.png">
-<meta property="og:image:width" content="800">
-<meta property="og:image:height" content="800">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="북수원자이렉스비아 보안대원 근무 매뉴얼">
-<meta name="twitter:image" content="https://p01056310076-alt.github.io/guard-work-manual/kakao_cover_1x1.png">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500;700;800&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
@@ -84,6 +72,31 @@ button{font:inherit;color:inherit}
 .menu button strong{font-family:var(--f-display);font-size:18px}
 .menu button span{font-size:13px;color:var(--muted);line-height:1.45}
 .menu button.warn{border-color:var(--alert)}
+.menu button.wide{grid-column:1/-1;min-height:auto;border:2px solid var(--uniform)}
+.menu button.wide strong{color:var(--ink)}
+.know-nav{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.know-nav button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer}
+.ksec{scroll-margin-top:16px}
+.ksec+.ksec{margin-top:22px}
+.ksec h3{font-size:20px}
+.ksec .when{font-family:var(--f-mono);font-size:13px;color:var(--muted);margin-top:2px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media (max-width:520px){.split{grid-template-columns:1fr}}
+.split>div{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--surface);min-width:0}
+.split h4{margin:0 0 4px;font-family:var(--f-display);font-size:16px}
+.split .yes h4{color:var(--ok)}
+.split .no{border-color:var(--alert)}
+.split .no h4{color:var(--alert)}
+.split ul{margin:0;padding-left:1.15em}
+.split li{font-weight:500;margin-top:4px}
+.src{font-size:13px;color:var(--muted);margin-top:8px}
+.src a{color:var(--muted)}
+.composer textarea{font:inherit;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%;min-height:64px;resize:vertical}
+.composer h4{margin:6px 0 0;font-family:var(--f-display);font-size:16px}
+.chkrow{display:grid;grid-template-columns:auto 5em 1fr;gap:8px;align-items:center}
+.chkrow input[type=checkbox]{width:24px;height:24px;accent-color:var(--ok)}
+.chkrow .t{font-family:var(--f-mono);font-weight:600;font-size:15px}
+.chkrow input[type=text]{min-width:0}
 .menu button.warn strong{color:var(--alert)}
 
 .search{margin-top:16px;position:relative}
@@ -220,6 +233,17 @@ table.conf th{font-size:13px;color:var(--muted);font-weight:600;white-space:nowr
 </style>
 
 
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="북수원자이렉스비아 보안대원 근무 매뉴얼">
+<meta property="og:description" content="보안대원을 위한 시간별 업무, 상황별 대응, 인수인계 및 긴급상황 안내서">
+<meta property="og:url" content="https://p01056310076-alt.github.io/guard-work-manual/">
+<meta property="og:image" content="https://p01056310076-alt.github.io/guard-work-manual/kakao_cover_1x1.png">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="800">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="북수원자이렉스비아 보안대원 근무 매뉴얼">
+<meta name="twitter:image" content="https://p01056310076-alt.github.io/guard-work-manual/kakao_cover_1x1.png">
 </head>
 <body>
 <div class="wrap">
@@ -387,6 +411,7 @@ function home(){
  <div class="search"><label for="q" class="lbl" style="font-size:13px;font-weight:600;color:var(--muted)">업무 검색</label>
   <input id="q" type="search" placeholder="이사, 차단기, 열쇠, 소등…" autocomplete="off"><div class="results" id="res"></div></div>
  <div class="menu">
+  <button data-go="know" class="wide"><strong>보안대원(경비원) 업무 범위</strong><span>법으로 정함 · 시행령 제69조의2 · 질의응답</span></button>
   <button data-go="schedule"><strong>오늘의 근무 일과</strong><span>시간대별 업무, 평일·휴일 차이</span></button>
   <button data-go="first"><strong>처음 근무하시나요?</strong><span>장비, 보고 순서, 응대 말씨</span></button>
   <button data-go="tasks"><strong>업무별 처리 방법</strong><span>차량 출입, 순찰, 민원, 이사</span></button>
@@ -520,11 +545,57 @@ function contacts(){
  <div class="contacts posts">${POSTS.map(([p,f])=>`<div><b>${p}</b><span>${f.map(x=>`<span class="fac">${x}</span>`).join("")}</span></div>`).join("")}</div>
  </section>`}
 
+
+/* ---------- 업무 범위 ---------- */
+function know(){
+ const nav=[["k-scope","업무 범위"],["k-law","법 조문"],["k-qa","질의응답"]];
+ return `<section class="view"><h2>보안대원(경비원) 업무 범위</h2><p class="lede">법으로 정한 보안대원 업무입니다. 2021년 10월 21일부터 공동주택관리법 시행령으로 시행되고 있습니다.</p>
+ <div class="know-nav">${nav.map(([id,t])=>`<button type="button" data-jump="${id}">${t}</button>`).join("")}</div>
+
+ <div class="detail ksec" id="k-scope"><h3>할 수 있는 일 · 할 수 없는 일</h3>
+ <p class="when">2021년 10월 21일 시행 · 공동주택관리법 시행령</p>
+ <div class="split"><div class="yes"><h4>할 수 있는 일</h4><ul>
+  <li><b>본래 업무</b>: 도난·화재 등 위험 발생을 막는 경비</li>
+  <li>청소와 이에 준하는 미화의 보조</li>
+  <li>재활용 가능 자원의 분리배출 감시·정리</li>
+  <li>안내문 게시, 우편수취함 투입</li>
+  <li>위험 방지 범위의 <b>주차 관리</b></li>
+  <li>위험 방지 범위의 <b>택배 보관</b></li></ul></div>
+ <div class="no"><h4>할 수 없는 일</h4><ul>
+  <li>입주민 개인 차량 <b>대리주차</b></li>
+  <li>택배 <b>세대 배달</b></li>
+  <li>개별 세대 대형 폐기물 수거·운반</li>
+  <li>전문 기술이 필요한 도색 등</li>
+  <li>개인 심부름 등 업무와 관계없는 일</li></ul></div></div>
+ <div class="blk"><h4>위반되면</h4><p style="margin:2px 0 0;font-weight:500">지자체가 사실을 조사해 시정명령을 내리고, 따르지 않으면 최대 1천만 원 과태료가 부과될 수 있습니다.</p></div>
+ <div class="blk"><h4>이렇게 안내하세요</h4>
+  <div class="script"><small>대리주차 요청</small><p id="kn0">“차량 이동은 법으로 정해진 보안대원 업무가 아니어서 해 드리기 어렵습니다. 양해 부탁드립니다.”</p><button class="copy" data-copy="kn0">문장 복사</button></div>
+  <div class="script"><small>택배 세대 배달 요청</small><p id="kn1">“택배는 초소에서 보관만 가능하고, 세대 배달은 할 수 없게 되어 있습니다. 찾아가실 때 말씀해 주세요.”</p><button class="copy" data-copy="kn1">문장 복사</button></div></div>
+ <p class="src">출처: <a href="https://www.ytn.co.kr/_ln/0102_202110210616449023" target="_blank" rel="noopener">YTN</a> · <a href="https://www.kyeonggi.com/article/202110241178039" target="_blank" rel="noopener">경기일보</a></p></div>
+
+ <div class="detail ksec" id="k-law"><h3>법 조문</h3>
+ <p class="when">공동주택관리법 시행령 제69조의2</p>
+ <div class="note" style="border:1px solid var(--line);background:var(--bg);margin-top:10px">
+ <p style="margin:0;font-weight:700">제69조의2(경비원이 예외적으로 종사할 수 있는 업무 등)</p>
+ <p style="margin:8px 0 0;font-weight:500">① 법 제65조의2제1항에서 “대통령령으로 정하는 공동주택 관리에 필요한 업무”란 다음 각 호의 업무를 말한다.</p>
+ <ol style="margin:6px 0 0;padding-left:1.4em;font-weight:500"><li>청소와 이에 준하는 미화의 보조</li><li>재활용 가능 자원의 분리배출 감시 및 정리</li><li>안내문의 게시와 우편수취함 투입</li></ol>
+ <p style="margin:10px 0 0;font-weight:500">② 공동주택 경비원은 공동주택에서의 도난, 화재, 그 밖의 혼잡 등으로 인한 위험발생을 방지하기 위한 범위에서 주차 관리와 택배물품 보관 업무를 수행할 수 있다.</p></div></div>
+
+ <div class="detail ksec" id="k-qa"><h3>질의응답</h3>
+ <div class="blk" style="margin-top:8px"><h4>Q1. ‘청소와 이에 준하는 미화의 보조’에 해당되는 경비원의 업무에는 어떤 것들이 있는지?</h4>
+ <p style="margin:6px 0 0;font-weight:500"><b>A.</b> ‘청소와 이에 준하는 미화의 보조’(이하 ‘청소와 미화보조’)에는 공동주택 단지 내 <b>쓰레기 수거, 잡초제거, 낙엽청소, 제설작업</b> 등 단지 내에서 안전하고 쾌적한 환경관리를 위해 필요한 일상적인 청소업무 및 현상유지를 위한 범위의 미화가 포함됨</p>
+ <p style="margin:6px 0 0;font-weight:500">- 단지별 여건을 감안하여 ‘청소와 미화보조’ 업무의 범위와 규모를 결정하되, 경비원의 주된 업무인 경비업무 수행에 지장을 초래하지 않아야 하고, 미화원 등 다른 근로자를 <b>보조하는 범위 내</b>로 설정할 필요가 있음</p></div>
+ <div class="blk"><h4>Q2. 공동주택 경비원은 시행령에서 허용된 업무를 모두 수행해야 하는 것인지?</h4>
+ <p style="margin:6px 0 0;font-weight:500"><b>A.</b> 시행령에서 규정한 공동주택 경비원의 업무를 모두 수행해야 하는 것은 아니며, 허용업무 중 단지별 여건을 고려하여 <b>경비업 도급계약서와 근로계약서 등에서 정한 업무만</b> 수행하면 됨</p></div>
+ <div class="note done" style="border-color:var(--uniform)"><b style="color:var(--ink)">쉽게 말하면</b><br>법이 허용한 일이라도 모두 하는 것은 아닙니다. 우리 단지 계약서에 적힌 일만 합니다. 계약서에 없는 일을 요청받으면 근무 책임자에게 확인합니다.</div></div>
+
+ </section>`}
+
 /* ---------- 렌더 ---------- */
 function render(){
- const v={home,schedule,tasks,handover,emergency,first,contacts}[state.view]||home;
+ const v={home,schedule,tasks,handover,emergency,first,contacts,know}[state.view]||home;
  app.innerHTML=v();
- document.querySelectorAll(".dock [data-go]").forEach(b=>{const map={first:"home",contacts:"home"};b.toggleAttribute("aria-current",false);if((map[state.view]||state.view)===b.dataset.go)b.setAttribute("aria-current","page")});
+ document.querySelectorAll(".dock [data-go]").forEach(b=>{const map={first:"home",contacts:"home",know:"home"};b.toggleAttribute("aria-current",false);if((map[state.view]||state.view)===b.dataset.go)b.setAttribute("aria-current","page")});
  if(state.view==="handover")compose();
 }
 function go(v){state.view=v;state.task=null;state.emg=null;render();window.scrollTo({top:0})}
@@ -544,6 +615,7 @@ function search(q){
  const hits=[];
  Object.entries(TASKS).forEach(([id,t])=>{const hay=[t.n,t.sub,t.where,t.prep,...t.steps,...t.caution,t.check||""].join(" ");if(hay.includes(q))hits.push(`<button data-task="${id}"><b>${t.n}</b><small>업무 · ${t.sub}</small></button>`)});
  Object.entries(EMG).forEach(([id,e])=>{if((e.n+e.s+e.order.join(" ")).includes(q))hits.push(`<button data-emg="${id}"><b style="color:var(--alert)">${e.n}</b><small>긴급상황</small></button>`)});
+ if("업무 범위 업무범위 대리주차 택배 주차 관리 분리배출 우편 안내문 청소 미화 제69조의2 시행령 계약서 법".includes(q))hits.push(`<button data-go="know"><b>보안대원(경비원) 업무 범위</b><small>법으로 정함 · 제69조의2 · 질의응답</small></button>`);
  if(HANDOVER.join(" ").includes(q))hits.push(`<button data-go="handover"><b>인수인계 확인</b><small>교대 전 확인표</small></button>`);
  res.innerHTML=hits.length?hits.join(""):`<small style="color:var(--muted)">‘${esc(q)}’에 맞는 업무가 없습니다. 다른 낱말로 찾아보세요.</small>`;
 }
@@ -560,6 +632,7 @@ document.addEventListener("click",async e=>{
  if(el.dataset.addentry){HO.entries.push(blankEntry());saveHO();render();const n=document.getElementById("e"+(HO.entries.length-1)+"-what");if(n)n.scrollIntoView({block:"center"});return}
  if(el.dataset.delentry){HO.entries.splice(+el.dataset.delentry,1);saveHO();render();return}
  if(el.dataset.clearentries){HO={from:HO.from,to:"",entries:[blankEntry()]};saveHO();render();return}
+ if(el.dataset.jump){const t=document.getElementById(el.dataset.jump);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});return}
  if(el.dataset.copy){const t=document.getElementById(el.dataset.copy).textContent.replace(/[“”]/g,"");
   try{await navigator.clipboard.writeText(t);el.textContent="복사했습니다"}catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById(el.dataset.copy));const s=getSelection();s.removeAllRanges();s.addRange(r);el.textContent=el.dataset.label?"선택됨":"선택됨 · 길게 눌러 복사"}
   setTimeout(()=>{el.textContent=el.dataset.label||"문장 복사"},1800)}
@@ -571,7 +644,8 @@ document.addEventListener("change",e=>{
  if(t.dataset.e!=null){HO.entries[+t.dataset.e][t.dataset.f]=t.value;saveHO();compose()}
  if(t.dataset.tr){let a=ST.get("gm-tr",[]);const i=+t.dataset.tr;a=t.checked?[...new Set([...a,i])]:a.filter(x=>x!==i);ST.set("gm-tr",a)}
 });
-document.addEventListener("input",e=>{if(e.target.id==="q")search(e.target.value);if(e.target.dataset.e!=null){HO.entries[+e.target.dataset.e][e.target.dataset.f]=e.target.value;saveHO();compose()}if(e.target.dataset.h){HO[e.target.dataset.h]=e.target.value;saveHO();compose()}});
+document.addEventListener("input",e=>{if(e.target.id==="q")search(e.target.value);if(e.target.dataset.e!=null){HO.entries[+e.target.dataset.e][e.target.dataset.f]=e.target.value;saveHO();compose()}if(e.target.dataset.h){HO[e.target.dataset.h]=e.target.value;saveHO();compose()}
+});
 document.addEventListener("submit",e=>e.preventDefault());
 const allowSel=el=>el&&el.closest&&el.closest("input,select,textarea,.script p,.out,.contacts .num");
 document.addEventListener("contextmenu",e=>{if(!allowSel(e.target))e.preventDefault()});
