@@ -453,19 +453,19 @@ function taskDetail(t){
   <div class="fact"><dt>준비물</dt><dd>${esc(t.prep)}</dd></div>
   <div class="fact"><dt>누구에게 보고?</dt><dd>${esc(t.report)}</dd></div>
  </dl>
- ${t.gates?`<div class="blk"><h4>게이트별 차량 <span class="b b-check">일부 확인 필요</span></h4><dl class="facts" style="margin-top:4px">${GATES.map(([g,v,add])=>`<div class="fact"><dt>${g}</dt><dd>${v}${add?`<br><b>추가:</b> ${add}`:""}</dd></div>`).join("")}</dl></div>`:""}
+ ${t.gates?`<div class="blk"><h4>게이트별 차량 </h4><dl class="facts" style="margin-top:4px">${GATES.map(([g,v,add])=>`<div class="fact"><dt>${g}</dt><dd>${v}${add?`<br><b>추가:</b> ${add}`:""}</dd></div>`).join("")}</dl></div>`:""}
  ${t.extra==="time"?`<div class="blk"><h4>사진에 적힌 통제 해제 시간</h4><dl class="facts" style="margin-top:4px"><div class="fact"><dt>오전</dt><dd style="font-family:var(--f-mono)">07:30~10:00</dd></div><div class="fact"><dt>오후</dt><dd style="font-family:var(--f-mono)">15:00~19:00</dd></div></dl></div>`:""}
  ${t.extra==="noise"?`<div class="blk"><h4>민원 종류</h4><p style="margin:2px 0 0">층간소음 · 배드민턴장 · 엘리시안 놀이터</p></div>`:""}
  ${t.phase?`<div class="blk"><h4>세 단계로 기억하기</h4><div class="phase">
    <div><b>이사 전</b><br>승강기 사용 신청서 징구·제출, 사용 승강기·시간·차량 동선 확인<br><b>보양 전·후 확인 및 사진 촬영</b> (승강기 내부·입구·공동현관의 기존 파손 상태 포함)</div>
    <div><b>진행 중</b><br>공용 출입구와 보행로가 막히지 않는지 확인, 이상 시 보고</div>
    <div><b>종료 후</b><br>보양재 철거·잔여 물품·오염·파손 확인, 주변 청결 상태 점검·사진 촬영, 시설물 상태 확인 결과서 작성·제출</div></div></div>`:""}
- <div class="blk"><h4>어떻게 처리하나요? <span class="b b-add">권장 보충 포함</span></h4>
+ <div class="blk"><h4>어떻게 처리하나요? </h4>
   <ol class="steps">${t.steps.map((s,i)=>`<li><label><input type="checkbox" id="st-${id}-${i}" data-step="${id}" data-i="${i}" ${done.includes(i)?"checked":""}><span>${i+1}. ${esc(s)}</span></label></li>`).join("")}</ol>
   <button class="reset" data-resetstep="${id}">체크 지우기</button></div>
  <div class="blk"><h4>주의할 점</h4><ul>${t.caution.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>
  <div class="note done"><b>완료 기준</b><br>${esc(t.done)}</div>
- ${t.check?`<div class="note check"><b>현장 확인 필요</b><br>${esc(t.check)}</div>`:""}
+ ${t.check?`<div class="note check">${esc(t.check)}</div>`:""}
  ${t.link==="handover"?`<p style="margin:14px 0 0"><button class="reset" data-go="handover" style="color:var(--ink);border-color:var(--ink)">인수인계 확인표 열기 →</button></p>`:""}
  </article>`}
 
