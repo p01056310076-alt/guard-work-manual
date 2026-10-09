@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>html{-webkit-text-size-adjust:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>북수원자이렉스비아 보안대원 근무 매뉴얼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500;700;800&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: 휴대폰 한 손 조작. 상단 표지 → 지금 할 일 → 하단 탭 4개 + 항상 보이는 긴급 버튼 */
+:root{
+  --bg:#eef1ee; --surface:#ffffff; --ink:#18221d; --muted:#46524b; --line:#d3dad5;
+  --uniform:#1f3a2e; --uniform-ink:#f3f6f2; --signal:#e0a21a; --signal-ink:#2b1f00;
+  --alert:#c4361f; --alert-ink:#fff; --check:#9a5b00; --check-bg:#fbf0d9; --add:#2d5f8a; --add-bg:#e3eef7; --ok:#2f7a4b;
+  --f-display:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1512; --surface:#18201c; --ink:#e7ece8; --muted:#b3bfb8; --line:#2c3832;
+  --uniform:#24453a; --uniform-ink:#eef4ef; --signal:#f0b53a; --signal-ink:#231900;
+  --alert:#e2513a; --alert-ink:#fff; --check:#f0c56a; --check-bg:#3a2e14; --add:#8fbde3; --add-bg:#1b2c3b; --ok:#6fcf93; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1512; --surface:#18201c; --ink:#e7ece8; --muted:#b3bfb8; --line:#2c3832;
+  --uniform:#24453a; --uniform-ink:#eef4ef; --signal:#f0b53a; --signal-ink:#231900;
+  --alert:#e2513a; --alert-ink:#fff; --check:#f0c56a; --check-bg:#3a2e14; --add:#8fbde3; --add-bg:#1b2c3b; --ok:#6fcf93; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.entry{display:grid;gap:8px;border:1px solid var(--line);border-left:4px solid var(--uniform);border-radius:6px;padding:12px;background:var(--surface)}
+.entry-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-display);font-weight:700}
+.entry .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.entry label{font-size:14px;font-weight:600;color:var(--muted);display:grid;gap:4px;min-width:0}
+.entry input,.entry select,.entry textarea{font:inherit;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%}
+.add-btn{border:2px dashed var(--uniform);background:none;border-radius:6px;padding:12px;font-weight:700;cursor:pointer;color:var(--ink)}
+.del-btn{background:none;border:1px solid var(--line);border-radius:4px;padding:3px 10px;font-size:13px;color:var(--alert);cursor:pointer}
+input,select,textarea,.script p,.out,.contacts .num{-webkit-user-select:text;user-select:text}
+.rights{margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font-size:13px;color:var(--muted);line-height:1.55}
+.rights b{color:var(--ink)}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;padding-inline:16px;padding-block:0 120px}
+.wrap{max-width:640px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.3}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--signal);outline-offset:2px}
+
+/* 표지 */
+.cover{background:var(--uniform);color:var(--uniform-ink);margin-inline:-16px;padding:22px 20px 20px;border-bottom:6px solid var(--signal)}
+.cover .site{font-family:var(--f-display);font-weight:700;font-size:15px;letter-spacing:.06em;opacity:.85}
+.cover h1{font-size:30px;font-weight:800;margin-top:2px}
+.cover p{margin:6px 0 0;font-size:15px;opacity:.85}
+.cover .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.cover .tags span{font-size:13px;border:1px solid color-mix(in srgb,var(--uniform-ink) 40%,transparent);padding:2px 10px;border-radius:99px}
+
+/* 지금 할 일 */
+.now{margin-top:16px;background:var(--surface);border:2px solid var(--ink);border-radius:6px;padding:16px}
+.now .lbl{font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--muted)}
+.clock{font-family:var(--f-mono);font-size:15px;color:var(--muted)}
+.now-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.now h2{font-size:22px;margin-top:4px}
+.now .next{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.now .next b{color:var(--ink)}
+.daytoggle{display:flex;gap:6px;margin-top:12px}
+.daytoggle button{flex:1;padding:10px;border:2px solid var(--line);background:var(--bg);border-radius:6px;font-weight:600;cursor:pointer}
+.daytoggle button[aria-pressed="true"]{border-color:var(--uniform);background:var(--uniform);color:var(--uniform-ink)}
+
+/* 홈 메뉴 */
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.menu button{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;min-height:96px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.menu button strong{font-family:var(--f-display);font-size:18px}
+.menu button span{font-size:13px;color:var(--muted);line-height:1.45}
+.menu button.warn{border-color:var(--alert)}
+.menu button.warn strong{color:var(--alert)}
+
+.search{margin-top:16px;position:relative}
+.search input{width:100%;font:inherit;font-size:17px;padding:14px 14px;border:2px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.results{margin-top:8px;display:grid;gap:6px}
+.results button{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px;cursor:pointer}
+.results small{color:var(--muted);display:block}
+
+section.view{margin-top:20px}
+section.view>h2{font-size:24px;margin-bottom:4px}
+.lede{color:var(--muted);font-size:15px;margin:0 0 14px}
+
+/* 시간표 */
+.timeline{list-style:none;margin:0;padding:0;border-left:3px solid var(--line);margin-left:6px}
+.timeline li{position:relative;padding:0 0 14px 18px}
+.timeline li::before{content:"";position:absolute;left:-9px;top:8px;width:15px;height:15px;border-radius:50%;background:var(--bg);border:3px solid var(--line)}
+.timeline li.past{opacity:.55}
+.timeline li.current::before{background:var(--signal);border-color:var(--ink)}
+.timeline li.off,.timeline li.dim{opacity:.38}
+.timeline li.emph .slot{border:2px solid var(--ink)}
+.timeline li.emph .n{font-weight:800}
+.slot{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;cursor:pointer;display:grid;gap:2px}
+.current .slot{border:2px solid var(--ink);box-shadow:4px 4px 0 var(--signal)}
+.slot .t{font-family:var(--f-mono);font-weight:600;font-size:15px;font-variant-numeric:tabular-nums}
+.slot .n{font-family:var(--f-display);font-weight:700;font-size:18px}
+.slot .d{font-size:15px;color:var(--ink);font-weight:500}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.b{font-size:12px;font-weight:600;padding:1px 8px;border-radius:4px;white-space:nowrap}
+.b-check{background:var(--check-bg);color:var(--check)}
+.b-add{background:var(--add-bg);color:var(--add)}
+.b-day{background:var(--uniform);color:var(--uniform-ink)}
+.b-now{background:var(--signal);color:var(--signal-ink)}
+
+/* 업무 카드 */
+.tasklist{display:grid;gap:8px}
+.tasklist>button{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tasklist>button strong{font-family:var(--f-display);font-size:18px;display:block}
+.tasklist>button span{font-size:14px;color:var(--muted)}
+.chev{font-family:var(--f-mono);font-size:22px;color:var(--muted)}
+
+.detail{background:var(--surface);border:2px solid var(--ink);border-radius:6px;padding:18px 16px;margin-top:4px}
+.back{background:none;border:none;color:var(--muted);padding:6px 0;cursor:pointer;font-size:15px;font-weight:600}
+.detail h3{font-size:23px}
+.detail .sub{color:var(--muted);font-size:15px;margin:4px 0 0}
+.facts{display:grid;gap:0;margin:16px 0 0;border-top:1px solid var(--line)}
+.fact{display:grid;grid-template-columns:7.2em 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.fact dt{font-weight:600;font-size:14px;color:var(--muted)}
+.fact dd{margin:0;min-width:0}
+.steps{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.steps label{display:contents;cursor:pointer}
+.steps input{width:26px;height:26px;margin:2px 0 0;accent-color:var(--ok)}
+.steps span{font-weight:600}
+.order li,.blk ul li,.phase div,.fact dd,.emg-detail .dont li{font-weight:500}
+.steps input:checked+span{color:var(--muted);text-decoration:line-through}
+.blk{margin-top:18px}
+.blk h4{font-family:var(--f-display);font-size:16px;margin:0 0 4px}
+.blk ul{margin:4px 0 0;padding-left:1.2em}
+.note{border-radius:6px;padding:12px 14px;font-size:15px;margin-top:14px}
+.note.check{background:var(--check-bg);color:var(--ink)}
+.note.check b{color:var(--check)}
+.note.done{border:2px dashed var(--ok)}
+.note.done b{color:var(--ok)}
+.reset{margin-top:12px;background:none;border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer;font-size:14px;color:var(--muted)}
+
+.phase{display:grid;gap:8px;margin-top:8px}
+.phase div{border-left:4px solid var(--uniform);padding:4px 0 4px 12px}
+.phase b{font-family:var(--f-display)}
+
+/* 응대 예문 */
+.script{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-top:8px}
+.script small{display:block;color:var(--muted);font-weight:600}
+.script p{margin:2px 0 0;font-size:17px}
+.copy{margin-top:6px;background:none;border:1px solid var(--line);border-radius:4px;padding:3px 10px;font-size:13px;cursor:pointer;color:var(--muted)}
+
+/* 인수인계 */
+.checklist{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+.checklist li{border-bottom:1px solid var(--line)}
+.checklist li:last-child{border-bottom:0}
+.checklist label{display:flex;gap:12px;align-items:center;padding:14px;cursor:pointer}
+.checklist input{width:26px;height:26px;flex:none;accent-color:var(--ok)}
+.checklist input:checked+span{color:var(--muted);text-decoration:line-through}
+.progress{font-family:var(--f-mono);font-size:14px;color:var(--muted);margin:8px 0}
+.composer{display:grid;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;margin-top:10px}
+.composer label{font-size:14px;font-weight:600;color:var(--muted);display:grid;gap:4px}
+.composer input,.composer select{font:inherit;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%}
+.out{background:var(--bg);border-radius:6px;padding:12px;font-size:16px;white-space:pre-wrap}
+
+/* 긴급 */
+.emg-list{display:grid;gap:8px}
+.emg-list>button{text-align:left;border:2px solid var(--alert);background:var(--surface);border-radius:6px;padding:14px;cursor:pointer}
+.emg-list>button strong{font-family:var(--f-display);font-size:19px;color:var(--alert);display:block}
+.emg-list>button span{font-size:14px;color:var(--muted)}
+.emg-detail{border:2px solid var(--alert);background:var(--surface);border-radius:6px;padding:16px;margin-top:4px}
+.emg-detail h3{color:var(--alert);font-size:23px}
+.big-num{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.big-num div{flex:1 1 120px;background:var(--alert);color:var(--alert-ink);border-radius:6px;padding:10px 12px}
+.big-num b{font-family:var(--f-mono);font-size:28px;display:block;line-height:1.1}
+.big-num small{font-size:13px}
+.order{margin:12px 0 0;padding-left:1.4em;display:grid;gap:6px}
+.order li::marker{font-family:var(--f-mono);font-weight:600;color:var(--alert)}
+.dont{margin-top:14px;border-top:2px solid var(--alert);padding-top:10px}
+.dont h4{margin:0;font-family:var(--f-display);color:var(--alert);font-size:16px}
+.dont ul{margin:4px 0 0;padding-left:1.2em}
+
+/* 연락처 */
+.contacts{background:var(--surface);border:1px solid var(--line);border-radius:6px}
+.contacts div{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:center}
+.contacts div:last-child{border-bottom:0}
+.contacts small{display:block;color:var(--muted);font-size:13px}
+.contacts .num{font-family:var(--f-mono);font-weight:600;white-space:nowrap}
+.posts div{grid-template-columns:4.5em 1fr;align-items:start}
+.posts b{font-family:var(--f-display);font-size:17px}
+.posts>div>span{display:flex;flex-wrap:wrap;gap:6px}
+.fac{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:2px 10px;font-size:15px;font-weight:500}
+.contacts .tbd{font-size:13px;color:var(--check);font-weight:600}
+
+table.conf{width:100%;border-collapse:collapse;font-size:15px;background:var(--surface)}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px}
+table.conf th,table.conf td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.conf th{font-size:13px;color:var(--muted);font-weight:600;white-space:nowrap}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--muted);margin-top:14px;align-items:center}
+.meta{font-size:13px;color:var(--muted);margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+
+/* 하단 내비 + 긴급 */
+.dock{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));z-index:10}
+.dock-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr) 1.3fr;gap:6px;align-items:stretch}
+.dock button{border:none;background:none;padding:8px 2px;border-radius:6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+.dock button[aria-current="page"]{color:var(--ink);background:var(--bg)}
+.dock .sos{background:var(--alert);color:var(--alert-ink);font-family:var(--f-display);font-weight:800;font-size:15px}
+.dock .sos[aria-current="page"]{background:var(--alert);color:var(--alert-ink);outline:3px solid var(--ink)}
+@media (prefers-reduced-motion:no-preference){.detail,.emg-detail{animation:rise .18s ease-out}@keyframes rise{from{transform:translateY(6px)}to{transform:none}}}
+</style>
+
+
+</head>
+<body>
+<div class="wrap">
+  <header class="cover">
+    <div class="site">북수원자이렉스비아</div>
+    <h1>보안대원 근무 매뉴얼</h1>
+    <p>처음 근무하는 대원도 쉽게 확인하는 현장 안내서</p>
+    <div class="tags"><span>시간별 업무</span><span>상황별 대응</span><span>인수인계</span><span>내부용 · 무단 배포 금지</span></div>
+  </header>
+
+  <main id="app"></main>
+
+
+  <div class="rights" role="note"><b>ⓒ 2026. All rights reserved.</b><br>작성자: 윤남주<br>
+  이 매뉴얼은 북수원자이렉스비아 보안대원 교육과 현장 업무용으로만 제공됩니다. 작성자의 허락 없이 내용을 복제·수정·배포하거나 다른 단지·업체 자료로 옮겨 쓸 수 없습니다. 화면 캡처나 링크를 외부로 전달하지 마세요.</div>
+</div>
+
+<nav class="dock" aria-label="메뉴">
+  <div class="dock-in">
+    <button data-go="home">처음</button>
+    <button data-go="schedule">일과</button>
+    <button data-go="tasks">업무</button>
+    <button data-go="handover">인수인계</button>
+    <button data-go="emergency" class="sos">긴급상황</button>
+  </div>
+</nav>
+
+<script>
+const ST = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- 데이터 ---------- */
+const SCHEDULE = [
+ {s:"05:30",n:"인수인계 점검",d:"사건·사고, 지시·전달사항, 초소 내·게이트 시설장비 상태, 기타사항을 점검합니다.",task:"handover-task"},
+ {s:"05:40",e:"06:00",n:"근무 교대 및 인수인계",d:"이전 근무자의 특이사항과 미처리 업무를 전달받고 장비 상태를 확인합니다.",task:"handover-task"},
+ {s:"06:15",n:"공동현관 조명 소등",d:"공동현관 안에서 딱지가 붙지 않은 스위치만 작동합니다. 자전거 보관소를 점검하고 정리합니다.",task:null},
+ {s:"06:30",n:"게이트 출구 차단기 개방",d:"게이트의 출구 차단기를 엽니다.",weekday:true,task:null},
+ {s:"06:40",n:"초소·스쿨버스존·흡연구역 청소",d:"초소, 스쿨버스존 주변, 단지 안팎의 흡연구역을 청소합니다.",task:null},
+ {s:"07:00",before:true,n:"근무 시작 준비 · 이사 일정 확인",d:"출근부 사인, 리더기, 이사통지서 수령.",task:"moving"},
+ {s:"08:00",e:"08:30",n:"출구 게이트 입초",d:"출구 게이트에 서서 통제합니다. 신호봉을 휴대합니다.",weekday:true,task:null},
+ {s:"08:30",e:"09:00",n:"스쿨버스존 입초",d:"스쿨버스존에 서서 통학차량과 보행자를 안내합니다. 신호봉을 휴대합니다.",weekday:true,task:null},
+ {s:"09:00",n:"차단기 닫힘",d:"게이트 차단기를 닫습니다.",task:null},
+ {s:"10:00",n:"주차단속 및 정선순찰 (그네 시건 해제)",d:"주차단속과 정선순찰을 하고, 놀이터 그네의 잠금(시건)을 풉니다.",task:"patrol"},
+ {s:"13:00",n:"고정순찰",d:"요일에 따라 바뀝니다.",task:"patrol",byDay:{
+   weekday:{n:"주차단속 및 정선순찰",d:"평상시 업무입니다. 일요일·공휴일도 같습니다."},
+   sat:{n:"정선순찰",d:"토요일은 주차단속 없이 정선순찰만 합니다."},
+   holiday:{n:"주차단속 및 정선순찰",d:"일요일·공휴일도 평상시와 같습니다."}}},
+ {s:"14:00",n:"정선순찰",d:"정해진 순찰 경로를 돌며 시설 이상과 위험요소를 확인합니다.",task:"patrol",byDay:{
+   weekday:{n:"정선순찰",d:"평상시 업무입니다. 정해진 순찰 경로를 돌며 시설 이상과 위험요소를 확인합니다."},
+   sat:{n:"분리수거장 정리",d:"토·일·공휴일은 순찰 대신 분리수거장을 정리합니다.",task:null},
+   holiday:{n:"분리수거장 정리",d:"토·일·공휴일은 순찰 대신 분리수거장을 정리합니다.",task:null}}},
+ {s:"16:00",e:"16:30",n:"스쿨버스존 입초",d:"스쿨버스존에 서서 하교 차량과 보행자를 안내합니다. 신호봉을 휴대합니다.",weekday:true,task:null},
+ {s:"18:20",n:"배드민턴장·공동현관 조명 점등",d:"지정 시설의 조명을 켭니다. 계절별 일출·일몰 시간에 따라 시각이 바뀝니다.",task:null},
+ {s:"20:00",n:"정선순찰",d:"야간에 필요한 시설·출입 상태를 점검합니다.",task:"patrol"},
+ {s:"21:00",n:"그네 시건 · 배드민턴장 소등",d:"놀이터 그네를 잠그고(시건) 배드민턴장 조명을 끕니다.",task:null},
+ {s:"22:00",e:"22:15",n:"배드민턴장 · 엘리시안 놀이터 순찰",d:"배드민턴장과 엘리시안 놀이터를 돌며 이용자와 시설 상태를 확인합니다.",task:"patrol"},
+ {s:"01:00",n:"주차 확인 및 순찰",d:"야간 주차 상태와 담당 구역의 이상 여부를 확인합니다.",task:"patrol"}
+];
+
+const TASKS = {
+ "handover-task":{n:"근무 교대 및 인수인계",sub:"앞 근무자에게 상황을 넘겨받고 장비를 확인하기",
+  when:"05:30 인수인계 점검 · 05:40~06:00 교대",where:"경비실 / 지정 교대 장소",prep:"인수인계서, 업무일지, 열쇠·스마트키, 손전등",
+  steps:["사건·사고, 지시·전달사항, 초소 내·게이트 시설장비 상태, 기타사항을 점검합니다.","앞 근무자에게 특이사항과 미처리 업무를 듣습니다.","게이트·차단기·출입문 상태를 확인합니다.","열쇠·스마트키 수량을 함께 셉니다.","손전등 작동을 확인합니다.","오늘 이사·공사·방문 일정을 확인합니다.","들은 내용을 인수인계서에 기록하고 서명합니다."],
+  caution:["수량이 맞지 않으면 교대 전에 바로 책임자에게 알립니다.","말로만 듣고 끝내지 말고 기록으로 남깁니다."],
+  report:"이상이 있으면 책임자에게. 시간·위치·상태·조치를 함께 전달",
+  done:"인수인계 확인표를 모두 확인하고, 이어받은 미처리 업무를 기록한 상태.",
+  check:"",link:"handover"},
+ "moving":{n:"이사차량 · 승강기 보양 확인",sub:"이사 전·중·후로 나눠 승강기와 공용부 상태 확인하기",
+  when:"07:00 이전 이사통지서 수령 · 이사 당일",where:"2번 게이트(화물·이사 차량, 확인 필요), 해당 동 승강기·공동현관",prep:"승강기 사용 신청서, 이사통지서, 촬영 기기",
+  steps:["입주민이 승강기 사용 신청서를 작성하도록 받아(징구) 제출합니다.","보양 전: 승강기 내부·입구·공동현관 상태를 확인하고 사진을 찍습니다.","보양 후: 보양재 설치 상태를 확인하고 사진을 찍습니다.","진행 중 공용 출입구와 보행로가 막히지 않는지 봅니다.","종료 후 보양재 철거·잔여 물품·오염·파손을 확인하고, 주변 청결 상태를 점검한 뒤 사진을 찍습니다.","이사 완료 후 승강기 등 시설물 상태 확인 결과서를 작성해 제출합니다."],
+  caution:["파손을 발견해도 현장에서 배상 책임을 정하지 않습니다. 담당자에게 넘깁니다.","사진은 시설 상태 확인에 필요한 범위만 찍습니다."],
+  report:"파손·분쟁은 관리사무소 담당자에게 사진과 함께",
+  done:"보양 전·후 사진이 모두 있고 시설물 상태 확인 결과서를 제출한 상태.",
+  check:"서류 명칭, 사진 보관 장소·열람 권한·삭제 기준",phase:true},
+ "patrol":{n:"정선순찰 · 주차 확인",sub:"지정된 경로를 따라 시설과 안전 상태 확인하기",
+  when:"10:00 · 13:00 · 14:00(평일) · 20:00 · 22:00 · 01:00",where:"담당 순찰 구역 (경로 확인 필요)",prep:"손전등, 업무일지",
+  steps:["출발 전 손전등 상태를 확인합니다.","담당 구역의 정해진 경로를 따라 이동합니다.","안전: 미끄럼, 장애물, 파손, 누수, 조명 이상을 봅니다.","출입: 지정 출입문과 게이트 상태를 봅니다.","주차: 통행 방해, 지정구역 위반 차량을 발견하면 스티커를 부착합니다.","환경: 담당 범위 안의 간단한 정리를 합니다.","이상이 있으면 안전한 위치에서 책임자에게 보고합니다.","발견 시간·위치·상태·조치 결과를 업무일지에 기록합니다."],
+  caution:["주차 위반은 ‘확인 → 스티커 부착 → 업무일지 기록’ 순서로 처리합니다.","차주와 다툼이 생기면 물러서고 책임자에게 보고합니다.","위험한 곳에 혼자 들어가지 않습니다."],
+  report:"시설 이상은 기전 담당자, 위험·분쟁은 근무 책임자에게",
+  done:"지정 경로 확인을 마치고, 발견한 이상사항을 보고·기록한 상태.",
+  check:"실제 순찰 경로, 점검 지점, 소요시간, 순찰 기록 방식, 이륜차 관리 문구"},
+ "vehicles":{n:"게이트별 차량 출입 안내",sub:"차량 종류에 맞는 게이트로 안내하기",
+  when:"상시",where:"1·2·3번 게이트",prep:"차량출입 관리대장(2종), 방문차량 등록 절차",
+  steps:["방문 목적과 방문 장소를 확인합니다.","단지에서 정한 승인·등록 절차를 확인합니다.","차량 종류에 맞는 게이트와 이동 경로를 안내합니다.","차단기 주변 보행자와 차량을 확인합니다.","미등록·통행 제한·장비 이상은 책임자에게 확인합니다.","차량출입 관리대장에 기록합니다.","관리실 등을 방문하는 지상운행 승용차는 관리실에 보고합니다."],
+  caution:["고장이나 충돌 위험이 있을 때 차단기를 반복 조작하지 않습니다.","차단기 정상 조작법은 실제 장비 사진으로 익힙니다."],
+  report:"미등록 차량·장비 이상은 책임자에게",
+  done:"차량이 맞는 게이트로 들어가고, 판단이 어려운 건은 확인을 받은 상태.",
+  check:"게이트별 허용 차량, 통행 방향, 등록 절차, 관리대장 2종의 구분, 차단기 조작법(사진)",gates:true},
+ "complaint":{n:"민원 처리 · 층간소음 · 야외시설",sub:"현장 출동 행동요령에 따른 민원 처리 순서",
+  when:"민원 접수 시",where:"경비실 인터폰 / 배드민턴장, 엘리시안 놀이터 등 야외시설",prep:"인터폰, 업무일지",
+  steps:["[층간소음 · 22시 이전] 민원을 접수하면 인터폰으로 소음이 나는 세대와 통화해 확인합니다.","[층간소음 · 22시 이전] 소음 자제를 부탁합니다.","[층간소음 · 22시 이전] 민원을 신고한 세대에 처리 결과를 알려 드립니다.","[층간소음 · 22시 이후] 심야시간이라 인터폰 사용이 곤란하다는 점을 신고 세대에 설명하고 양해를 구합니다.","[야외시설] 현장에 출동해 민원 내용을 확인합니다.","[야외시설] 상황에 맞게 대처해 상황을 마무리합니다.","[야외시설] 결과를 관리실 또는 신고한 입주민에게 보고합니다.","업무일지에 기록합니다."],
+  caution:["소음 세대에 신고한 세대가 누구인지 알리지 않습니다. (권장 보충)","언성이 높아지면 물러서고 관리실에 보고합니다. (권장 보충)"],
+  report:"층간소음: 신고 세대에 처리사항 통보 · 야외시설: 관리실 또는 신고 입주민",
+  done:"신고한 세대(또는 관리실)에 결과를 알리고 업무일지에 기록한 상태.",
+  check:"",extra:"noise"}
+};
+
+const GATES=[["1번 게이트","입주민 차량, 방문등록 차량 (통행 방향 확인 필요)",""],["2번 게이트","입주민 차량, 방문등록 차량, 화물·이사·공사 차량 등 (구분과 등록 절차 확인 필요)",""],["3번 게이트","입주민·방문 승용차 등 (허용 범위 확인 필요)",""]];
+
+const SCRIPTS=[["일반 문의","확인해서 안내해 드리겠습니다."],["담당자 확인이 필요할 때","담당자 확인이 필요한 사항입니다. 내용을 전달하겠습니다."],["주차 안내","이곳은 통행에 지장이 생길 수 있어 지정된 위치로 이동을 부탁드립니다."],["CCTV 열람 요청","영상 열람은 지정 담당자가 절차에 따라 안내합니다. 담당자에게 연결해 드리겠습니다."]];
+
+const HANDOVER=["사건·사고","지시·전달사항","초소 내 시설장비 상태","게이트·차단기·출입문 이상 여부","열쇠·스마트키 수량 및 보관 상태","손전등 등 장비 상태","인수인계서·업무일지 작성","진행 중인 이사·공사·방문 일정","미처리 민원과 시설 고장","조명·시설 개방 상태","기타사항","다음 근무자가 이어서 처리할 업무"];
+
+const EMG={
+ alarm:{n:"부표시기 소방경보",s:"동 확인, 관리실에 계단·층 문의, 출동해 외관 점검",nums:[["관리실","031-8019-9912 · 계단·층 문의"],["방재실","070-4821-2110"],["119","연기·불꽃 확인 시"]],
+  order:["부표시기에서 소방경보가 울린 동을 확인합니다.","관리실에 몇 계단, 몇 층인지 문의합니다.","순찰 중인 대원이 해당 동으로 출동합니다.","건물 외관을 돌며 이상 징후(연기 발생)를 점검합니다.","점검 결과를 관리실에 보고합니다.","관리실 직원(기전팀)이 조치를 마치고 철수할 때까지 공동현관 입구 바깥쪽에서 입주민에게 상황을 설명합니다."],
+  dont:["연기나 불꽃이 보이면 오작동으로 단정하지 말고 ‘화재·연기 발견’ 순서를 따릅니다. (권장 보충)","경보 설비를 임의로 끄거나 복구하지 않습니다. 기전팀이 조치합니다. (권장 보충)"]},
+ fire:{n:"화재 · 연기 발견",s:"내 안전 먼저, 119 신고, 위치 전달",nums:[["119","화재 신고"]],
+  order:["내 몸의 안전부터 확보합니다.","119에 신고하고 동·층·위치를 정확히 말합니다.","책임자에게 연락합니다.","승인된 비상계획에 따라 입주민을 안내합니다.","대피가 가능한 경우 계단을 이용하도록 안내합니다."],
+  dont:["‘무조건 밖으로 대피’라고 안내하지 않습니다. 불이 난 위치, 연기 유입, 이동 경로 안전에 따라 행동이 달라집니다.","엘리베이터를 이용하지 않습니다.","연기가 찬 곳에 혼자 들어가지 않습니다."]},
+ elevator:{n:"승강기 갇힘",s:"위치·번호 확인, 업체 연락, 탑승자 안심",nums:[["업체","유지관리업체 (번호 입력 필요)"],["119","필요 시"]],
+  order:["어느 동, 몇 호기인지 확인합니다. 승강기 번호는 승강기 안·밖 표지에 있습니다.","인터폰으로 갇힌 인원과 건강 상태를 묻습니다.","유지관리업체에 연락합니다.","다친 사람이 있거나 위급하면 119에 신고합니다.","탑승자에게 ‘구조가 오고 있으니 문을 억지로 열지 마세요’라고 안내합니다.","책임자에게 보고합니다."],
+  dont:["교육과 권한 없이 문을 강제로 열거나 구조 조작을 하지 않습니다.","탑승자가 스스로 빠져나오지 않도록 안내합니다."]},
+ threat:{n:"폭행 · 위협",s:"거리 두기, 위험하면 112",nums:[["112","경찰 신고"]],
+  order:["상대와 거리를 둡니다.","위험하다고 느끼면 바로 112에 신고합니다.","안전한 곳에서 책임자에게 보고합니다.","시간·장소·상황을 기록합니다."],
+  dont:["맞대응하거나 몸으로 막지 않습니다.","혼자 쫓아가지 않습니다."]},
+ barrier:{n:"차단기 고장",s:"주변 접근 막기, 업체·책임자 연락",nums:[["업체","차단기 업체 (번호 입력 필요)"]],
+  order:["차단봉 주변으로 사람·차량이 다가오지 않게 합니다.","책임자와 담당 업체에 연락합니다.","필요하면 다른 게이트로 안내합니다(허용 범위 확인 필요).","인수인계에 상태와 다음 할 일을 남깁니다."],
+  dont:["고장 상태에서 반복 조작하지 않습니다.","차단봉 아래에 서지 않습니다."]},
+ water:{n:"누수 · 침수",s:"접근 위험 확인, 기전 담당자 보고",nums:[["기전","B조 기전주임 김성욱 010-9833-9883"],["방재실","070-4821-2110"]],
+  order:["전기 설비 근처인지 등 접근이 위험한지 먼저 봅니다.","기전 담당자에게 위치와 상태를 보고합니다.","안전한 범위에서 통행을 다른 길로 안내합니다.","사진과 함께 기록합니다."],
+  dont:["물이 고인 전기 설비 근처에 들어가지 않습니다."]}
+};
+
+
+
+/* ---------- 상태 ---------- */
+let state={view:"home",task:null,emg:null,day:ST.get("gm-day",null)};
+if(!state.day){const d=new Date().getDay();state.day=d===6?"sat":(d===0?"holiday":"weekday");}
+if(!["weekday","sat","holiday"].includes(state.day))state.day="weekday";
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const toMin=t=>{const[h,m]=t.split(":").map(Number);return h*60+m};
+// 근무일은 05:30 시작 → 다음날 05:29까지. 01:00은 하루의 끝쪽으로 정렬
+const shiftMin=t=>{let m=toMin(t);return m<toMin("05:30")?m+1440:m};
+function nowShift(){const d=new Date();let m=d.getHours()*60+d.getMinutes();return m<toMin("05:30")?m+1440:m}
+function currentIndex(){const n=nowShift();let idx=-1;SCHEDULE.forEach((r,i)=>{if(shiftMin(r.s)<=n)idx=i});return idx}
+const applies=r=>!(r.weekday&&state.day!=="weekday");
+const R=r=>r.byDay?Object.assign({},r,r.byDay[state.day]):r;
+const EMPH={sat:["13:00","14:00"],holiday:["14:00"]};
+const DAYNAME={weekday:"평일",sat:"토요일",holiday:"일·공휴일"};
+const timeLabel=r=>r.before?`${r.s} 이전`:(r.e?`${r.s}~${r.e}`:r.s);
+
+function badges(r){let b="";if(r.byDay)b+=`<span class="b b-add" style="background:var(--add-bg)">${DAYNAME[state.day]} 기준</span>`;if(r.weekday)b+=`<span class="b b-day">평일</span>`;if(r.check)b+=`<span class="b b-check">확인 필요</span>`;return b?`<div class="badges">${b}</div>`:""}
+
+/* ---------- 화면 ---------- */
+function dayToggle(){return `<div class="daytoggle" role="group" aria-label="요일 선택">
+ <button id="d-wk" data-day="weekday" aria-pressed="${state.day==="weekday"}">평일</button>
+ <button id="d-sa" data-day="sat" aria-pressed="${state.day==="sat"}">토요일</button>
+ <button id="d-hd" data-day="holiday" aria-pressed="${state.day==="holiday"}">일·공휴일</button></div>`}
+
+function home(){
+ const S=SCHEDULE.map(R);const i=currentIndex();const cur=i>=0?S[i]:null;
+ let nx=null;for(let k=i+1;k<S.length;k++){if(applies(S[k])){nx=S[k];break}}
+ const d=new Date();const hh=String(d.getHours()).padStart(2,"0"),mm=String(d.getMinutes()).padStart(2,"0");
+ let curHtml;
+ if(!cur)curHtml=`<h2>근무 교대 전입니다</h2><p class="lede" style="margin:4px 0 0">05:30 인수인계 점검부터 시작합니다.</p>`;
+ else if(!applies(cur))curHtml=`<h2>${esc(cur.n)}</h2><p class="lede" style="margin:4px 0 0">평일 업무라 오늘(${DAYNAME[state.day]})은 해당하지 않습니다.</p>`;
+ else curHtml=`<h2>${esc(cur.n)}</h2><div class="badges"><span class="b b-now">${timeLabel(cur)}</span>${cur.check?'<span class="b b-check">확인 필요</span>':""}</div>${cur.task?`<p style="margin:10px 0 0"><button class="reset" data-task="${cur.task}" style="margin:0;color:var(--ink);border-color:var(--ink)">처리 방법 보기 →</button></p>`:""}`;
+ return `<section class="now" aria-live="polite">
+  <div class="now-head"><span class="lbl">지금 할 일</span><span class="clock">현재 ${hh}:${mm}</span></div>
+  ${curHtml}
+  ${nx?`<div class="next">다음 · <b>${timeLabel(nx)} ${esc(nx.n)}</b></div>`:""}
+  ${dayToggle()}
+ </section>
+ <div class="search"><label for="q" class="lbl" style="font-size:13px;font-weight:600;color:var(--muted)">업무 검색</label>
+  <input id="q" type="search" placeholder="이사, 차단기, 열쇠, 소등…" autocomplete="off"><div class="results" id="res"></div></div>
+ <div class="menu">
+  <button data-go="schedule"><strong>오늘의 근무 일과</strong><span>시간대별 업무, 평일·휴일 차이</span></button>
+  <button data-go="first"><strong>처음 근무하시나요?</strong><span>장비, 보고 순서, 응대 말씨</span></button>
+  <button data-go="tasks"><strong>업무별 처리 방법</strong><span>차량 출입, 순찰, 민원, 이사</span></button>
+  <button data-go="emergency" class="warn"><strong>문제가 생겼어요</strong><span>소방경보, 화재, 승강기 갇힘</span></button>
+  <button data-go="handover"><strong>인수인계 확인</strong><span>교대 전 확인표, 전달 문장</span></button>
+  <button data-go="contacts"><strong>연락처 안내</strong><span>관리사무소, 책임자, 초소별 시설물</span></button>
+ </div>`}
+
+function schedule(){
+ const i=currentIndex();
+ return `<section class="view"><h2>오늘의 근무 일과</h2><p class="lede">요일을 고르면 그날 업무로 바뀝니다. 업무를 누르면 처리 순서·주의사항·보고 방법이 열립니다. 노란 점이 지금 시간입니다. 처리 방법이 있는 업무에는 › 표시가 있습니다.</p>
+ ${dayToggle()}${EMPH[state.day]?`<p class="lede" style="margin:10px 0 0"><b style="color:var(--ink)">${DAYNAME[state.day]}에 달라지는 ${EMPH[state.day].join("·")} 업무만 진하게</b> 표시했습니다.</p>`:""}<div style="height:14px"></div>
+ <ol class="timeline">${SCHEDULE.map(R).map((r,k)=>{const em=EMPH[state.day];const cls=[em?(em.includes(r.s)?"emph":"dim"):"",!applies(r)?"off":"",k===i?"current":(k<i?"past":"")].join(" ");
+  return `<li class="${cls}"><button class="slot" ${r.task?`data-task="${r.task}"`:'data-noop="1"'}>
+   <span class="t">${timeLabel(r)}${!applies(r)?" · 오늘 해당 없음":""}${r.task?" ›":""}</span><span class="n">${esc(r.n)}</span><span class="d">${esc(r.d)}</span>
+   ${badges(r)}${r.check?`<span class="d" style="color:var(--check)">확인할 것: ${esc(r.check)}</span>`:""}</button></li>`}).join("")}</ol>
+ <div class="note done" style="border-color:var(--uniform)"><b style="color:var(--ink)">휴게시간</b>
+ <dl class="facts" style="margin-top:6px"><div class="fact"><dt>점심</dt><dd><span style="font-family:var(--f-mono)">11:00~13:00</span> 중 각 1시간</dd></div><div class="fact"><dt>저녁</dt><dd><span style="font-family:var(--f-mono)">17:00~19:00</span> 중 각 1시간</dd></div><div class="fact"><dt>야간</dt><dd><span style="font-family:var(--f-mono)">21:00~06:00</span> 중 각 4시간</dd></div></dl>
+ <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">휴게시간은 쉬는 시간입니다. 교대로 쉬는 순서는 근무조에서 정합니다.</p></div>
+ </section>`}
+
+function tasks(){
+ if(state.task)return taskDetail(TASKS[state.task]);
+ const order=["handover-task","vehicles","patrol","complaint","moving"];
+ return `<section class="view"><h2>업무별 처리 방법</h2><p class="lede">모든 업무를 같은 순서로 정리했습니다: 언제 · 어디서 · 준비물 · 처리 순서 · 주의 · 보고 · 완료 기준.</p>
+ <div class="tasklist">${order.map(id=>`<button data-task="${id}"><div><strong>${TASKS[id].n}</strong><span>${TASKS[id].sub}</span></div><span class="chev">›</span></button>`).join("")}</div>
+ <h3 style="margin-top:24px;font-size:19px">입주민 응대 말씨</h3><p class="lede">짧고 같은 말로 안내하면 대원마다 답이 달라지는 일이 줄어듭니다.</p>
+ ${scriptsHtml()}</section>`}
+
+function scriptsHtml(){return SCRIPTS.map(([k,v],i)=>`<div class="script"><small>${k}</small><p id="sc${i}">“${v}”</p><button class="copy" data-copy="sc${i}">문장 복사</button></div>`).join("")}
+
+function taskDetail(t){
+ const id=state.task;const done=ST.get("gm-steps-"+id,[]);
+ return `<button class="back" data-back="tasks">‹ 업무 목록</button>
+ <article class="detail"><h3>${t.n}</h3><p class="sub">${t.sub}</p>
+ <dl class="facts">
+  <div class="fact"><dt>언제 하나요?</dt><dd>${esc(t.when)}</dd></div>
+  <div class="fact"><dt>어디에서?</dt><dd>${esc(t.where)}</dd></div>
+  <div class="fact"><dt>준비물</dt><dd>${esc(t.prep)}</dd></div>
+  <div class="fact"><dt>누구에게 보고?</dt><dd>${esc(t.report)}</dd></div>
+ </dl>
+ ${t.gates?`<div class="blk"><h4>게이트별 차량 <span class="b b-check">일부 확인 필요</span></h4><dl class="facts" style="margin-top:4px">${GATES.map(([g,v,add])=>`<div class="fact"><dt>${g}</dt><dd>${v}${add?`<br><b>추가:</b> ${add}`:""}</dd></div>`).join("")}</dl></div>`:""}
+ ${t.extra==="time"?`<div class="blk"><h4>사진에 적힌 통제 해제 시간</h4><dl class="facts" style="margin-top:4px"><div class="fact"><dt>오전</dt><dd style="font-family:var(--f-mono)">07:30~10:00</dd></div><div class="fact"><dt>오후</dt><dd style="font-family:var(--f-mono)">15:00~19:00</dd></div></dl></div>`:""}
+ ${t.extra==="noise"?`<div class="blk"><h4>민원 종류</h4><p style="margin:2px 0 0">층간소음 · 배드민턴장 · 엘리시안 놀이터</p></div>`:""}
+ ${t.phase?`<div class="blk"><h4>세 단계로 기억하기</h4><div class="phase">
+   <div><b>이사 전</b><br>승강기 사용 신청서 징구·제출, 사용 승강기·시간·차량 동선 확인<br><b>보양 전·후 확인 및 사진 촬영</b> (승강기 내부·입구·공동현관의 기존 파손 상태 포함)</div>
+   <div><b>진행 중</b><br>공용 출입구와 보행로가 막히지 않는지 확인, 이상 시 보고</div>
+   <div><b>종료 후</b><br>보양재 철거·잔여 물품·오염·파손 확인, 주변 청결 상태 점검·사진 촬영, 시설물 상태 확인 결과서 작성·제출</div></div></div>`:""}
+ <div class="blk"><h4>어떻게 처리하나요? <span class="b b-add">권장 보충 포함</span></h4>
+  <ol class="steps">${t.steps.map((s,i)=>`<li><label><input type="checkbox" id="st-${id}-${i}" data-step="${id}" data-i="${i}" ${done.includes(i)?"checked":""}><span>${i+1}. ${esc(s)}</span></label></li>`).join("")}</ol>
+  <button class="reset" data-resetstep="${id}">체크 지우기</button></div>
+ <div class="blk"><h4>주의할 점</h4><ul>${t.caution.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>
+ <div class="note done"><b>완료 기준</b><br>${esc(t.done)}</div>
+ ${t.check?`<div class="note check"><b>현장 확인 필요</b><br>${esc(t.check)}</div>`:""}
+ ${t.link==="handover"?`<p style="margin:14px 0 0"><button class="reset" data-go="handover" style="color:var(--ink);border-color:var(--ink)">인수인계 확인표 열기 →</button></p>`:""}
+ </article>`}
+
+function handover(){
+ const done=ST.get("gm-ho",[]);
+ return `<section class="view"><h2>인수인계 확인</h2><p class="lede">교대 전에 하나씩 확인합니다. 체크는 이 휴대폰에만 남는 개인 확인용입니다.</p>
+ <p class="progress" id="hoprog">${done.length} / ${HANDOVER.length} 확인</p>
+ <ul class="checklist">${HANDOVER.map((h,i)=>`<li><label><input type="checkbox" id="ho-${i}" data-ho="${i}" ${done.includes(i)?"checked":""}><span>${h}</span></label></li>`).join("")}</ul>
+ <button class="reset" data-resetho="1">새 교대 시작 (체크 지우기)</button>
+ <h3 style="margin-top:24px;font-size:19px">전달문서 만들기</h3>
+ <p class="lede">전달할 일을 한 건씩 추가하면 아래에 문서가 완성됩니다. 짧게 “이상 있음”만 쓰지 말고, 현재 상태와 다음 할 일까지 적습니다.</p>
+ <form class="composer" id="comp">
+  <div class="row2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+   <label for="h-from">인계자<input id="h-from" data-h="from" value="${esc(HO.from)}" placeholder="이름"></label>
+   <label for="h-to">인수자<input id="h-to" data-h="to" value="${esc(HO.to)}" placeholder="이름"></label>
+  </div>
+  <div id="entries" style="display:grid;gap:10px">${entriesHtml()}</div>
+  <button type="button" class="add-btn" data-addentry="1">+ 전달 건 추가</button>
+  <div class="out" id="c-out"></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="copy" data-copy="c-out">전달문서 전체 복사</button><button type="button" class="copy" data-clearentries="1">새 문서 (모두 지우기)</button></div>
+ </form></section>`}
+
+const CATS=["사건·사고","지시·전달사항","초소 내 시설장비","게이트 시설장비","민원","이사·공사","기타사항"];
+const ACTS=["담당자에게 보고했고 현재 점검 대기 중입니다","담당자에게 보고했고 조치가 끝났습니다","관리실에 보고했습니다","전달만 하면 되는 사항입니다","아직 보고하지 못했습니다"];
+const blankEntry=()=>({time:"",cat:CATS[0],place:"",what:"",act:ACTS[0],next:""});
+let HO=ST.get("gm-hodoc",null)||{from:"",to:"",entries:[{time:"14:20",cat:"게이트 시설장비",place:"2번 게이트",what:"차단기 이상",act:ACTS[0],next:"점검 결과와 정상 작동 여부를 확인해 주세요"},{time:"",cat:"지시·전달사항",place:"관리실",what:"",act:ACTS[3],next:""}]};
+function saveHO(){ST.set("gm-hodoc",HO)}
+function entriesHtml(){return HO.entries.map((e,i)=>`<div class="entry">
+  <div class="entry-head"><span>${i+1}번째 건</span>${HO.entries.length>1?`<button type="button" class="del-btn" data-delentry="${i}">이 건 삭제</button>`:""}</div>
+  <div class="row2"><label for="e${i}-cat">구분<select id="e${i}-cat" data-e="${i}" data-f="cat">${CATS.map(c=>`<option${c===e.cat?" selected":""}>${c}</option>`).join("")}</select></label>
+  <label for="e${i}-time">시간<input id="e${i}-time" type="time" data-e="${i}" data-f="time" value="${esc(e.time)}"></label></div>
+  <label for="e${i}-place">위치<input id="e${i}-place" data-e="${i}" data-f="place" value="${esc(e.place)}" placeholder="예: 103동 공동현관"></label>
+  <label for="e${i}-what">내용<input id="e${i}-what" data-e="${i}" data-f="what" value="${esc(e.what)}" placeholder="예: 누수 발견"></label>
+  <label for="e${i}-act">조치<select id="e${i}-act" data-e="${i}" data-f="act">${ACTS.map(c=>`<option${c===e.act?" selected":""}>${c}</option>`).join("")}</select></label>
+  <label for="e${i}-next">다음 근무자가 할 일<input id="e${i}-next" data-e="${i}" data-f="next" value="${esc(e.next)}" placeholder="예: 시설팀 방문 여부 확인"></label>
+ </div>`).join("")}
+
+function emergency(){
+ if(state.emg){const e=EMG[state.emg];return `<button class="back" data-back="emergency">‹ 긴급상황 목록</button>
+  <article class="emg-detail"><h3>${e.n}</h3>
+  <div class="big-num">${e.nums.map(([n,l])=>`<div><b>${n}</b><small>${l}</small></div>`).join("")}</div>
+  <ol class="order">${e.order.map(o=>`<li>${o}</li>`).join("")}</ol>
+  <div class="dont"><h4>하지 않습니다</h4><ul>${e.dont.map(o=>`<li>${o}</li>`).join("")}</ul></div>
+  </article><p class="lede" style="margin-top:12px">신고할 때는 <b>동 · 층 · 위치 · 상황 · 다친 사람</b> 순서로 말하면 빠릅니다.</p>`}
+ return `<section class="view"><h2 style="color:var(--alert)">긴급상황</h2><p class="lede">일반 업무보다 먼저 합니다. 내 안전이 첫째입니다.</p>
+ <div class="big-num" style="margin-bottom:14px"><div><b>119</b><small>화재 · 구급</small></div><div><b>112</b><small>범죄 · 위협</small></div></div>
+ <div class="emg-list">${Object.entries(EMG).map(([k,e])=>`<button data-emg="${k}"><strong>${e.n}</strong><span>${e.s}</span></button>`).join("")}</div></section>`}
+
+function first(){
+ return `<section class="view"><h2>처음 근무하시나요?</h2><p class="lede">첫 근무 전에 아래를 차례로 익혀 두세요. <span class="b b-add">권장 보충</span></p>
+ <div class="detail" style="border-width:1px">
+ <div class="blk" style="margin-top:0"><h4>기본 장비 · 서류</h4><ul><li>출근부 (관리실, 1초소)</li><li>인수인계서 · 업무일지</li><li>차량출입 관리대장 (2종)</li><li>손전등 · 열쇠/스마트키</li><li>차단기 조작은 실제 장비 사진으로 익힙니다 <span class="b b-check">사진 필요</span></li></ul></div>
+ <div class="blk"><h4>보고 순서</h4><ol style="margin:4px 0 0;padding-left:1.3em"><li>위급하면 119 / 112가 먼저</li><li>근무 책임자: 보안팀장 박재현 <span style="font-family:var(--f-mono)">010-9153-2478</span> · 보안주임 김성은 <span style="font-family:var(--f-mono)">010-2714-8283</span></li><li>관리사무소 <span style="font-family:var(--f-mono)">031-8019-9912</span> · 기전 담당자 B조 기전주임 김성욱 <span style="font-family:var(--f-mono)">010-9833-9883</span></li></ol><p class="sub">비상연락: 방재실 <span style="font-family:var(--f-mono)">070-4821-2110</span></p></div>
+ <div class="blk"><h4>첫 근무 교육 확인</h4>
+  <ul class="checklist" style="margin-top:6px">${["시간표를 처음부터 끝까지 따라가 봤다","순찰 경로를 직접 걸어봤다","차단기 정상 조작을 직접 해봤다","부표시기 위치와 보는 법을 안다","승강기 비상 연락 방법을 안다","인수인계 전달문서를 써봤다"].map((x,i)=>`<li><label><input type="checkbox" id="tr-${i}" data-tr="${i}" ${ST.get("gm-tr",[]).includes(i)?"checked":""}><span>${x}</span></label></li>`).join("")}</ul></div>
+ </div>
+ <h3 style="margin-top:22px;font-size:19px">입주민 응대 말씨</h3>${scriptsHtml()}
+ </section>`}
+
+const POSTS=[["1초소",["풋살장","엘린시아 놀이터","분수"]],["2초소",["배드민턴장","엘린시아 놀이터","분수"]],["3초소",["뜰 카페","커뮤니티 공간"]]];
+const CONTACTS=[
+ ["관리사무소","대표 번호","031-8019-9912"],
+ ["근무 책임자","보안팀장 박재현","010-9153-2478"],
+ ["근무 책임자","보안주임 김성은","010-2714-8283"],
+ ["기전 담당자","B조 기전주임 김성욱","010-9833-9883"],
+ ["비상연락","방재실","070-4821-2110"]];
+function contacts(){
+ return `<section class="view"><h2>연락처 안내</h2><p class="lede">번호를 길게 누르거나 복사 버튼으로 옮겨 전화하세요. 내부 연락처이므로 외부에 전달하지 않습니다.</p>
+ <div class="contacts">
+  <div><span><b>화재 · 구급</b><small>소방</small></span><span class="num">119</span></div>
+  <div><span><b>범죄 · 위협</b><small>경찰</small></span><span class="num">112</span></div>
+  ${CONTACTS.map(([a,b,n],i)=>`<div><span><b>${a}</b><small>${b}</small></span><span style="display:flex;gap:6px;align-items:center"><span class="num" id="ct${i}">${n}</span><button type="button" class="copy" style="margin:0" data-copy="ct${i}" data-label="복사">복사</button></span></div>`).join("")}
+  <div><span><b>승강기 유지관리업체</b><small>갇힘·고장</small></span><span class="tbd">입력 필요</span></div>
+  <div><span><b>차단기 업체</b><small>게이트 장비</small></span><span class="tbd">입력 필요</span></div>
+ </div>
+ <h3 style="margin-top:22px;font-size:19px">초소별 관리 시설물</h3>
+ <div class="contacts posts">${POSTS.map(([p,f])=>`<div><b>${p}</b><span>${f.map(x=>`<span class="fac">${x}</span>`).join("")}</span></div>`).join("")}</div>
+ </section>`}
+
+/* ---------- 렌더 ---------- */
+function render(){
+ const v={home,schedule,tasks,handover,emergency,first,contacts}[state.view]||home;
+ app.innerHTML=v();
+ document.querySelectorAll(".dock [data-go]").forEach(b=>{const map={first:"home",contacts:"home"};b.toggleAttribute("aria-current",false);if((map[state.view]||state.view)===b.dataset.go)b.setAttribute("aria-current","page")});
+ if(state.view==="handover")compose();
+}
+function go(v){state.view=v;state.task=null;state.emg=null;render();window.scrollTo({top:0})}
+
+function compose(){
+ const out=document.getElementById("c-out");if(!out)return;
+ const d=new Date();const days="일월화수목금토";
+ const head=`[인수인계 전달사항] ${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")} (${days[d.getDay()]})\n인계: ${HO.from||"○○○"} → 인수: ${HO.to||"○○○"}\n`;
+ const lines=HO.entries.map((e,i)=>{const t=e.time?(()=>{const[h,m]=e.time.split(":");return `${Number(h)}시 ${Number(m)}분, `})():"";
+  const body=`${t}${e.place?e.place+"에서 ":""}${e.what||"(내용)"}${e.what?"을(를) 확인했습니다":""}. ${e.act}.${e.next?" 다음 근무자는 "+e.next+(/[.요]$/.test(e.next)?"":"."):""}`;
+  return `${i+1}. [${e.cat}] ${body}`});
+ out.textContent=head+"\n"+lines.join("\n");
+}
+
+function search(q){
+ const res=document.getElementById("res");q=q.trim();if(!q){res.innerHTML="";return}
+ const hits=[];
+ Object.entries(TASKS).forEach(([id,t])=>{const hay=[t.n,t.sub,t.where,t.prep,...t.steps,...t.caution,t.check||""].join(" ");if(hay.includes(q))hits.push(`<button data-task="${id}"><b>${t.n}</b><small>업무 · ${t.sub}</small></button>`)});
+ Object.entries(EMG).forEach(([id,e])=>{if((e.n+e.s+e.order.join(" ")).includes(q))hits.push(`<button data-emg="${id}"><b style="color:var(--alert)">${e.n}</b><small>긴급상황</small></button>`)});
+ if(HANDOVER.join(" ").includes(q))hits.push(`<button data-go="handover"><b>인수인계 확인</b><small>교대 전 확인표</small></button>`);
+ res.innerHTML=hits.length?hits.join(""):`<small style="color:var(--muted)">‘${esc(q)}’에 맞는 업무가 없습니다. 다른 낱말로 찾아보세요.</small>`;
+}
+
+document.addEventListener("click",async e=>{
+ const el=e.target.closest("button");if(!el)return;
+ if(el.dataset.go){go(el.dataset.go);return}
+ if(el.dataset.task){state.view="tasks";state.task=el.dataset.task;state.emg=null;render();scrollTo({top:0});return}
+ if(el.dataset.emg){state.view="emergency";state.emg=el.dataset.emg;render();scrollTo({top:0});return}
+ if(el.dataset.back){state.task=null;state.emg=null;state.view=el.dataset.back;render();return}
+ if(el.dataset.day){state.day=el.dataset.day;ST.set("gm-day",state.day);render();return}
+ if(el.dataset.resetstep){ST.set("gm-steps-"+el.dataset.resetstep,[]);render();return}
+ if(el.dataset.resetho){ST.set("gm-ho",[]);render();return}
+ if(el.dataset.addentry){HO.entries.push(blankEntry());saveHO();render();const n=document.getElementById("e"+(HO.entries.length-1)+"-what");if(n)n.scrollIntoView({block:"center"});return}
+ if(el.dataset.delentry){HO.entries.splice(+el.dataset.delentry,1);saveHO();render();return}
+ if(el.dataset.clearentries){HO={from:HO.from,to:"",entries:[blankEntry()]};saveHO();render();return}
+ if(el.dataset.copy){const t=document.getElementById(el.dataset.copy).textContent.replace(/[“”]/g,"");
+  try{await navigator.clipboard.writeText(t);el.textContent="복사했습니다"}catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById(el.dataset.copy));const s=getSelection();s.removeAllRanges();s.addRange(r);el.textContent=el.dataset.label?"선택됨":"선택됨 · 길게 눌러 복사"}
+  setTimeout(()=>{el.textContent=el.dataset.label||"문장 복사"},1800)}
+});
+document.addEventListener("change",e=>{
+ const t=e.target;
+ if(t.dataset.step){const k="gm-steps-"+t.dataset.step;let a=ST.get(k,[]);const i=+t.dataset.i;a=t.checked?[...new Set([...a,i])]:a.filter(x=>x!==i);ST.set(k,a)}
+ if(t.dataset.ho){let a=ST.get("gm-ho",[]);const i=+t.dataset.ho;a=t.checked?[...new Set([...a,i])]:a.filter(x=>x!==i);ST.set("gm-ho",a);document.getElementById("hoprog").textContent=`${a.length} / ${HANDOVER.length} 확인`}
+ if(t.dataset.e!=null){HO.entries[+t.dataset.e][t.dataset.f]=t.value;saveHO();compose()}
+ if(t.dataset.tr){let a=ST.get("gm-tr",[]);const i=+t.dataset.tr;a=t.checked?[...new Set([...a,i])]:a.filter(x=>x!==i);ST.set("gm-tr",a)}
+});
+document.addEventListener("input",e=>{if(e.target.id==="q")search(e.target.value);if(e.target.dataset.e!=null){HO.entries[+e.target.dataset.e][e.target.dataset.f]=e.target.value;saveHO();compose()}if(e.target.dataset.h){HO[e.target.dataset.h]=e.target.value;saveHO();compose()}});
+document.addEventListener("submit",e=>e.preventDefault());
+const allowSel=el=>el&&el.closest&&el.closest("input,select,textarea,.script p,.out,.contacts .num");
+document.addEventListener("contextmenu",e=>{if(!allowSel(e.target))e.preventDefault()});
+document.addEventListener("dragstart",e=>e.preventDefault());
+document.addEventListener("copy",e=>{const sel=getSelection();const n=sel&&sel.anchorNode;const el=n&&(n.nodeType===1?n:n.parentElement);if(!allowSel(el))e.preventDefault()});
+setInterval(()=>{if(state.view==="home"&&!document.activeElement.matches("input"))render()},60000);
+render();
+</script>
+
+</body>
+</html>
