@@ -74,6 +74,17 @@ button{font:inherit;color:inherit}
 .menu button.warn{border-color:var(--alert)}
 .menu button.wide{grid-column:1/-1;min-height:auto;border:2px solid var(--uniform)}
 .menu button.wide strong{color:var(--ink)}
+.home-pin{display:flex;align-items:center;gap:12px;width:100%;margin-top:12px;text-align:left;background:var(--surface);border:2px dashed var(--uniform);border-radius:6px;padding:12px 14px;cursor:pointer}
+.home-pin .ic{flex:none;width:40px;height:40px;border-radius:10px;background:var(--uniform);color:var(--uniform-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:20px}
+.home-pin strong{font-family:var(--f-display);font-size:17px;display:block}
+.home-pin span.t{font-size:13px;color:var(--muted)}
+.os-tabs{display:flex;gap:6px;margin:0 0 12px}
+.os-tabs button{flex:1;padding:10px;border:2px solid var(--line);background:var(--bg);border-radius:6px;font-weight:700;cursor:pointer}
+.os-tabs button[aria-pressed="true"]{border-color:var(--uniform);background:var(--uniform);color:var(--uniform-ink)}
+.pin-steps{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px;counter-reset:ps}
+.pin-steps li{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;font-weight:500}
+.pin-steps li::before{counter-increment:ps;content:counter(ps);width:30px;height:30px;border-radius:50%;background:var(--signal);color:var(--signal-ink);display:grid;place-items:center;font-family:var(--f-mono);font-weight:700}
+.kbd{display:inline-block;border:1px solid var(--line);background:var(--bg);border-radius:4px;padding:0 6px;font-weight:700;white-space:nowrap}
 .know-nav{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
 .know-nav button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer}
 .ksec{scroll-margin-top:16px}
@@ -98,6 +109,13 @@ button{font:inherit;color:inherit}
 .chkrow .t{font-family:var(--f-mono);font-weight:600;font-size:15px}
 .chkrow input[type=text]{min-width:0}
 .menu button.warn strong{color:var(--alert)}
+.menu button,.home-pin{transition:background-color .12s,border-color .12s}
+.menu button.on,.menu button:active,.home-pin.on,.home-pin:active{background:var(--uniform);border-color:var(--uniform);border-style:solid}
+.menu button.on strong,.menu button:active strong,.menu button.on span,.menu button:active span,.home-pin.on strong,.home-pin:active strong,.home-pin.on span.t,.home-pin:active span.t{color:var(--uniform-ink)}
+.home-pin.on .ic,.home-pin:active .ic{background:var(--uniform-ink);color:var(--uniform)}
+.menu button.warn.on,.menu button.warn:active{background:var(--alert);border-color:var(--alert)}
+.menu button.warn.on strong,.menu button.warn:active strong,.menu button.warn.on span,.menu button.warn:active span{color:var(--alert-ink)}
+@media (prefers-reduced-motion:reduce){.menu button,.home-pin{transition:none}}
 
 .search{margin-top:16px;position:relative}
 .search input{width:100%;font:inherit;font-size:17px;padding:14px 14px;border:2px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
@@ -118,7 +136,10 @@ section.view>h2{font-size:24px;margin-bottom:4px}
 .timeline li.off,.timeline li.dim{opacity:.38}
 .timeline li.emph .slot{border:2px solid var(--ink)}
 .timeline li.emph .n{font-weight:800}
-.slot{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;cursor:pointer;display:grid;gap:2px}
+.slot{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;cursor:pointer;display:grid;gap:2px;position:relative}
+.slot.has-go{padding-right:44px}
+.slot .go{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--f-mono);font-size:26px;font-weight:700;color:var(--uniform);line-height:1}
+.slot[data-noop]{cursor:default}
 .current .slot{border:2px solid var(--ink);box-shadow:4px 4px 0 var(--signal)}
 .slot .t{font-family:var(--f-mono);font-weight:600;font-size:15px;font-variant-numeric:tabular-nums}
 .slot .n{font-family:var(--f-display);font-weight:700;font-size:18px}
@@ -135,10 +156,19 @@ section.view>h2{font-size:24px;margin-bottom:4px}
 .tasklist>button{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .tasklist>button strong{font-family:var(--f-display);font-size:18px;display:block}
 .tasklist>button span{font-size:14px;color:var(--muted)}
-.chev{font-family:var(--f-mono);font-size:22px;color:var(--muted)}
+.chev{font-family:var(--f-mono);font-size:24px;color:var(--uniform);font-weight:700}
 
 .detail{background:var(--surface);border:2px solid var(--ink);border-radius:6px;padding:18px 16px;margin-top:4px}
-.back{background:none;border:none;color:var(--muted);padding:6px 0;cursor:pointer;font-size:15px;font-weight:600}
+.backbar{display:flex;align-items:center;margin:14px 0 -4px}
+.back{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:99px;color:var(--ink);padding:8px 16px 8px 10px;min-height:44px;cursor:pointer;font-size:16px;font-weight:700}
+.back .ar,.pager .ar{font-family:var(--f-mono);font-size:22px;line-height:1;color:var(--uniform)}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.pager button{display:flex;align-items:center;gap:8px;min-height:56px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);cursor:pointer;text-align:left;min-width:0}
+.pager button.next{justify-content:flex-end;text-align:right;grid-column:2}
+.pager small{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.pager b{display:block;font-family:var(--f-display);font-size:15px;overflow-wrap:anywhere}
+.fwd{display:inline-flex;align-items:center;gap:6px}
+.fwd .ar{font-family:var(--f-mono);font-size:20px;line-height:1}
 .detail h3{font-size:23px}
 .detail .sub{color:var(--muted);font-size:15px;margin:4px 0 0}
 .facts{display:grid;gap:0;margin:16px 0 0;border-top:1px solid var(--line)}
@@ -233,17 +263,6 @@ table.conf th{font-size:13px;color:var(--muted);font-weight:600;white-space:nowr
 </style>
 
 
-<meta property="og:type" content="website">
-<meta property="og:locale" content="ko_KR">
-<meta property="og:title" content="북수원자이렉스비아 보안대원 근무 매뉴얼">
-<meta property="og:description" content="보안대원을 위한 시간별 업무, 상황별 대응, 인수인계 및 긴급상황 안내서">
-<meta property="og:url" content="https://p01056310076-alt.github.io/guard-work-manual/">
-<meta property="og:image" content="https://p01056310076-alt.github.io/guard-work-manual/kakao_cover_1x1.png">
-<meta property="og:image:width" content="800">
-<meta property="og:image:height" content="800">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="북수원자이렉스비아 보안대원 근무 매뉴얼">
-<meta name="twitter:image" content="https://p01056310076-alt.github.io/guard-work-manual/kakao_cover_1x1.png">
 </head>
 <body>
 <div class="wrap">
@@ -320,10 +339,10 @@ const TASKS = {
  "patrol":{n:"정선순찰 · 주차 확인",sub:"지정된 경로를 따라 시설과 안전 상태 확인하기",
   when:"10:00 · 13:00 · 14:00(평일) · 20:00 · 22:00 · 01:00",where:"담당 순찰 구역 (경로 확인 필요)",prep:"손전등, 업무일지",
   steps:["출발 전 손전등 상태를 확인합니다.","담당 구역의 정해진 경로를 따라 이동합니다.","안전: 미끄럼, 장애물, 파손, 누수, 조명 이상을 봅니다.","출입: 지정 출입문과 게이트 상태를 봅니다.","주차: 통행 방해, 지정구역 위반 차량을 발견하면 스티커를 부착합니다.","환경: 담당 범위 안의 간단한 정리를 합니다.","이상이 있으면 안전한 위치에서 책임자에게 보고합니다.","발견 시간·위치·상태·조치 결과를 업무일지에 기록합니다."],
-  caution:["주차 위반은 ‘확인 → 스티커 부착 → 업무일지 기록’ 순서로 처리합니다.","차주와 다툼이 생기면 물러서고 책임자에게 보고합니다.","위험한 곳에 혼자 들어가지 않습니다."],
+  caution:["주차 위반은 ‘확인 → 스티커 부착 → 사진 촬영’ 순서로 처리합니다.","차주와 다툼이 생기면 물러서고 책임자에게 보고합니다.","위험한 곳에 혼자 들어가지 않습니다."],
   report:"시설 이상은 기전 담당자, 위험·분쟁은 근무 책임자에게",
   done:"지정 경로 확인을 마치고, 발견한 이상사항을 보고·기록한 상태.",
-  check:"실제 순찰 경로, 점검 지점, 소요시간, 순찰 기록 방식, 이륜차 관리 문구"},
+  check:"실제 순찰 경로, 점검 지점, 소요시간, 순찰 기록 방식"},
  "vehicles":{n:"게이트별 차량 출입 안내",sub:"차량 종류에 맞는 게이트로 안내하기",
   when:"상시",where:"1·2·3번 게이트",prep:"차량출입 관리대장(2종), 방문차량 등록 절차",
   steps:["방문 목적과 방문 장소를 확인합니다.","단지에서 정한 승인·등록 절차를 확인합니다.","차량 종류에 맞는 게이트와 이동 경로를 안내합니다.","차단기 주변 보행자와 차량을 확인합니다.","미등록·통행 제한·장비 이상은 책임자에게 확인합니다.","차량출입 관리대장에 기록합니다.","관리실 등을 방문하는 지상운행 승용차는 관리실에 보고합니다."],
@@ -334,13 +353,13 @@ const TASKS = {
  "complaint":{n:"민원 처리 · 층간소음 · 야외시설",sub:"현장 출동 행동요령에 따른 민원 처리 순서",
   when:"민원 접수 시",where:"경비실 인터폰 / 배드민턴장, 엘리시안 놀이터 등 야외시설",prep:"인터폰, 업무일지",
   steps:["[층간소음 · 22시 이전] 민원을 접수하면 인터폰으로 소음이 나는 세대와 통화해 확인합니다.","[층간소음 · 22시 이전] 소음 자제를 부탁합니다.","[층간소음 · 22시 이전] 민원을 신고한 세대에 처리 결과를 알려 드립니다.","[층간소음 · 22시 이후] 심야시간이라 인터폰 사용이 곤란하다는 점을 신고 세대에 설명하고 양해를 구합니다.","[야외시설] 현장에 출동해 민원 내용을 확인합니다.","[야외시설] 상황에 맞게 대처해 상황을 마무리합니다.","[야외시설] 결과를 관리실 또는 신고한 입주민에게 보고합니다.","업무일지에 기록합니다."],
-  caution:["소음 세대에 신고한 세대가 누구인지 알리지 않습니다. (권장 보충)","언성이 높아지면 물러서고 관리실에 보고합니다. (권장 보충)"],
+  caution:["소음 세대에 신고한 세대가 누구인지 알리지 않습니다.","언성이 높아지면 물러서고 관리실에 보고합니다."],
   report:"층간소음: 신고 세대에 처리사항 통보 · 야외시설: 관리실 또는 신고 입주민",
   done:"신고한 세대(또는 관리실)에 결과를 알리고 업무일지에 기록한 상태.",
   check:"",extra:"noise"}
 };
 
-const GATES=[["1번 게이트","입주민 차량, 방문등록 차량 (통행 방향 확인 필요)",""],["2번 게이트","입주민 차량, 방문등록 차량, 화물·이사·공사 차량 등 (구분과 등록 절차 확인 필요)",""],["3번 게이트","입주민·방문 승용차 등 (허용 범위 확인 필요)",""]];
+const GATES=[["1번 게이트","입주민 차량, 방문등록 차량",""],["2번 게이트","입주민 차량, 방문등록 차량, 화물·이사·공사 차량 등",""],["3번 게이트","입주민·방문 승용차 등",""]];
 
 const SCRIPTS=[["일반 문의","확인해서 안내해 드리겠습니다."],["담당자 확인이 필요할 때","담당자 확인이 필요한 사항입니다. 내용을 전달하겠습니다."],["주차 안내","이곳은 통행에 지장이 생길 수 있어 지정된 위치로 이동을 부탁드립니다."],["CCTV 열람 요청","영상 열람은 지정 담당자가 절차에 따라 안내합니다. 담당자에게 연결해 드리겠습니다."]];
 
@@ -349,7 +368,7 @@ const HANDOVER=["사건·사고","지시·전달사항","초소 내 시설장비
 const EMG={
  alarm:{n:"부표시기 소방경보",s:"동 확인, 관리실에 계단·층 문의, 출동해 외관 점검",nums:[["관리실","031-8019-9912 · 계단·층 문의"],["방재실","070-4821-2110"],["119","연기·불꽃 확인 시"]],
   order:["부표시기에서 소방경보가 울린 동을 확인합니다.","관리실에 몇 계단, 몇 층인지 문의합니다.","순찰 중인 대원이 해당 동으로 출동합니다.","건물 외관을 돌며 이상 징후(연기 발생)를 점검합니다.","점검 결과를 관리실에 보고합니다.","관리실 직원(기전팀)이 조치를 마치고 철수할 때까지 공동현관 입구 바깥쪽에서 입주민에게 상황을 설명합니다."],
-  dont:["연기나 불꽃이 보이면 오작동으로 단정하지 말고 ‘화재·연기 발견’ 순서를 따릅니다. (권장 보충)","경보 설비를 임의로 끄거나 복구하지 않습니다. 기전팀이 조치합니다. (권장 보충)"]},
+  dont:["연기나 불꽃이 보이면 오작동으로 단정하지 말고 ‘화재·연기 발견’ 순서를 따릅니다.","경보 설비를 임의로 끄거나 복구하지 않습니다. 기전팀이 조치합니다."]},
  fire:{n:"화재 · 연기 발견",s:"내 안전 먼저, 119 신고, 위치 전달",nums:[["119","화재 신고"]],
   order:["내 몸의 안전부터 확보합니다.","119에 신고하고 동·층·위치를 정확히 말합니다.","책임자에게 연락합니다.","승인된 비상계획에 따라 입주민을 안내합니다.","대피가 가능한 경우 계단을 이용하도록 안내합니다."],
   dont:["‘무조건 밖으로 대피’라고 안내하지 않습니다. 불이 난 위치, 연기 유입, 이동 경로 안전에 따라 행동이 달라집니다.","엘리베이터를 이용하지 않습니다.","연기가 찬 곳에 혼자 들어가지 않습니다."]},
@@ -362,7 +381,7 @@ const EMG={
  barrier:{n:"차단기 고장",s:"주변 접근 막기, 업체·책임자 연락",nums:[["업체","차단기 업체 (번호 입력 필요)"]],
   order:["차단봉 주변으로 사람·차량이 다가오지 않게 합니다.","책임자와 담당 업체에 연락합니다.","필요하면 다른 게이트로 안내합니다(허용 범위 확인 필요).","인수인계에 상태와 다음 할 일을 남깁니다."],
   dont:["고장 상태에서 반복 조작하지 않습니다.","차단봉 아래에 서지 않습니다."]},
- water:{n:"누수 · 침수",s:"접근 위험 확인, 기전 담당자 보고",nums:[["기전","B조 기전주임 김성욱 010-9833-9883"],["방재실","070-4821-2110"]],
+ water:{n:"누수 · 침수",s:"접근 위험 확인, 기전 담당자 보고",nums:[["방재실","070-4821-2110"]],
   order:["전기 설비 근처인지 등 접근이 위험한지 먼저 봅니다.","기전 담당자에게 위치와 상태를 보고합니다.","안전한 범위에서 통행을 다른 길로 안내합니다.","사진과 함께 기록합니다."],
   dont:["물이 고인 전기 설비 근처에 들어가지 않습니다."]}
 };
@@ -401,7 +420,7 @@ function home(){
  let curHtml;
  if(!cur)curHtml=`<h2>근무 교대 전입니다</h2><p class="lede" style="margin:4px 0 0">05:30 인수인계 점검부터 시작합니다.</p>`;
  else if(!applies(cur))curHtml=`<h2>${esc(cur.n)}</h2><p class="lede" style="margin:4px 0 0">평일 업무라 오늘(${DAYNAME[state.day]})은 해당하지 않습니다.</p>`;
- else curHtml=`<h2>${esc(cur.n)}</h2><div class="badges"><span class="b b-now">${timeLabel(cur)}</span>${cur.check?'<span class="b b-check">확인 필요</span>':""}</div>${cur.task?`<p style="margin:10px 0 0"><button class="reset" data-task="${cur.task}" style="margin:0;color:var(--ink);border-color:var(--ink)">처리 방법 보기 →</button></p>`:""}`;
+ else curHtml=`<h2>${esc(cur.n)}</h2><div class="badges"><span class="b b-now">${timeLabel(cur)}</span>${cur.check?'<span class="b b-check">확인 필요</span>':""}</div>${cur.task?`<p style="margin:10px 0 0"><button class="reset" data-task="${cur.task}" style="margin:0;color:var(--ink);border-color:var(--ink)"><span class="fwd">처리 방법 보기 <span class="ar">›</span></span></button></p>`:""}`;
  return `<section class="now" aria-live="polite">
   <div class="now-head"><span class="lbl">지금 할 일</span><span class="clock">현재 ${hh}:${mm}</span></div>
   ${curHtml}
@@ -418,24 +437,28 @@ function home(){
   <button data-go="emergency" class="warn"><strong>문제가 생겼어요</strong><span>소방경보, 화재, 승강기 갇힘</span></button>
   <button data-go="handover"><strong>인수인계 확인</strong><span>교대 전 확인표, 전달 문장</span></button>
   <button data-go="contacts"><strong>연락처 안내</strong><span>관리사무소, 책임자, 초소별 시설물</span></button>
- </div>`}
+ </div>
+ <button class="home-pin" data-go="pin"><span class="ic" aria-hidden="true">+</span><span><strong>휴대폰 바탕화면에 바로가기 만들기</strong><span class="t">한 번 만들어 두면 앱처럼 바로 열립니다</span></span></button>`}
 
 function schedule(){
  const i=currentIndex();
- return `<section class="view"><h2>오늘의 근무 일과</h2><p class="lede">요일을 고르면 그날 업무로 바뀝니다. 업무를 누르면 처리 순서·주의사항·보고 방법이 열립니다. 노란 점이 지금 시간입니다. 처리 방법이 있는 업무에는 › 표시가 있습니다.</p>
+ return `<section class="view"><h2>오늘의 근무 일과</h2><p class="lede">요일을 고르면 그날 업무로 바뀝니다. 업무를 누르면 처리 순서·주의사항·보고 방법이 열립니다. 노란 점이 지금 시간입니다. 오른쪽에 › 표시가 있는 업무를 누르면 처리 방법이 열립니다.</p>
  ${dayToggle()}${EMPH[state.day]?`<p class="lede" style="margin:10px 0 0"><b style="color:var(--ink)">${DAYNAME[state.day]}에 달라지는 ${EMPH[state.day].join("·")} 업무만 진하게</b> 표시했습니다.</p>`:""}<div style="height:14px"></div>
- <ol class="timeline">${SCHEDULE.map(R).map((r,k)=>{const em=EMPH[state.day];const cls=[em?(em.includes(r.s)?"emph":"dim"):"",!applies(r)?"off":"",k===i?"current":(k<i?"past":"")].join(" ");
-  return `<li class="${cls}"><button class="slot" ${r.task?`data-task="${r.task}"`:'data-noop="1"'}>
-   <span class="t">${timeLabel(r)}${!applies(r)?" · 오늘 해당 없음":""}${r.task?" ›":""}</span><span class="n">${esc(r.n)}</span><span class="d">${esc(r.d)}</span>
+ <ol class="timeline">${SCHEDULE.map(R).map((r,k)=>{const em=EMPH[state.day];const cls=[em?(em.includes(r.s)?"emph":(k===i?"":"dim")):"",!applies(r)?"off":"",k===i?"current":(k<i?"past":"")].join(" ");
+  return `<li class="${cls}"><button class="slot${r.task?" has-go":""}" ${r.task?`data-task="${r.task}"`:'data-noop="1"'}>
+   <span class="t">${timeLabel(r)}${!applies(r)?" · 오늘 해당 없음":""}</span>${r.task?`<span class="go" aria-hidden="true">›</span>`:""}<span class="n">${esc(r.n)}</span><span class="d">${esc(r.d)}</span>
    ${badges(r)}${r.check?`<span class="d" style="color:var(--check)">확인할 것: ${esc(r.check)}</span>`:""}</button></li>`}).join("")}</ol>
  <div class="note done" style="border-color:var(--uniform)"><b style="color:var(--ink)">휴게시간</b>
  <dl class="facts" style="margin-top:6px"><div class="fact"><dt>점심</dt><dd><span style="font-family:var(--f-mono)">11:00~13:00</span> 중 각 1시간</dd></div><div class="fact"><dt>저녁</dt><dd><span style="font-family:var(--f-mono)">17:00~19:00</span> 중 각 1시간</dd></div><div class="fact"><dt>야간</dt><dd><span style="font-family:var(--f-mono)">21:00~06:00</span> 중 각 4시간</dd></div></dl>
  <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">휴게시간은 쉬는 시간입니다. 교대로 쉬는 순서는 근무조에서 정합니다.</p></div>
  </section>`}
 
+const TASK_ORDER=["handover-task","vehicles","patrol","complaint","moving"];
+function pagerHtml(list,cur,key,names){const i=list.indexOf(cur);if(i<0)return "";const p=list.at(i-1),n=list.at(i+1);
+ return `<nav class="pager" aria-label="이전 다음">${i>0?`<button type="button" data-swap-${key}="${p}"><span class="ar">‹</span><span><small>이전</small><b>${names(p)}</b></span></button>`:""}${n?`<button type="button" class="next" data-swap-${key}="${n}"><span><small>다음</small><b>${names(n)}</b></span><span class="ar">›</span></button>`:""}</nav>`}
 function tasks(){
  if(state.task)return taskDetail(TASKS[state.task]);
- const order=["handover-task","vehicles","patrol","complaint","moving"];
+ const order=TASK_ORDER;
  return `<section class="view"><h2>업무별 처리 방법</h2><p class="lede">모든 업무를 같은 순서로 정리했습니다: 언제 · 어디서 · 준비물 · 처리 순서 · 주의 · 보고 · 완료 기준.</p>
  <div class="tasklist">${order.map(id=>`<button data-task="${id}"><div><strong>${TASKS[id].n}</strong><span>${TASKS[id].sub}</span></div><span class="chev">›</span></button>`).join("")}</div>
  <h3 style="margin-top:24px;font-size:19px">입주민 응대 말씨</h3><p class="lede">짧고 같은 말로 안내하면 대원마다 답이 달라지는 일이 줄어듭니다.</p>
@@ -445,28 +468,27 @@ function scriptsHtml(){return SCRIPTS.map(([k,v],i)=>`<div class="script"><small
 
 function taskDetail(t){
  const id=state.task;const done=ST.get("gm-steps-"+id,[]);
- return `<button class="back" data-back="tasks">‹ 업무 목록</button>
- <article class="detail"><h3>${t.n}</h3><p class="sub">${t.sub}</p>
+ return `<article class="detail"><h3>${t.n}</h3><p class="sub">${t.sub}</p>
  <dl class="facts">
   <div class="fact"><dt>언제 하나요?</dt><dd>${esc(t.when)}</dd></div>
   <div class="fact"><dt>어디에서?</dt><dd>${esc(t.where)}</dd></div>
   <div class="fact"><dt>준비물</dt><dd>${esc(t.prep)}</dd></div>
   <div class="fact"><dt>누구에게 보고?</dt><dd>${esc(t.report)}</dd></div>
  </dl>
- ${t.gates?`<div class="blk"><h4>게이트별 차량 </h4><dl class="facts" style="margin-top:4px">${GATES.map(([g,v,add])=>`<div class="fact"><dt>${g}</dt><dd>${v}${add?`<br><b>추가:</b> ${add}`:""}</dd></div>`).join("")}</dl></div>`:""}
+ ${t.gates?`<div class="blk"><h4>게이트별 차량</h4><dl class="facts" style="margin-top:4px">${GATES.map(([g,v,add])=>`<div class="fact"><dt>${g}</dt><dd>${v}${add?`<br><b>추가:</b> ${add}`:""}</dd></div>`).join("")}</dl></div>`:""}
  ${t.extra==="time"?`<div class="blk"><h4>사진에 적힌 통제 해제 시간</h4><dl class="facts" style="margin-top:4px"><div class="fact"><dt>오전</dt><dd style="font-family:var(--f-mono)">07:30~10:00</dd></div><div class="fact"><dt>오후</dt><dd style="font-family:var(--f-mono)">15:00~19:00</dd></div></dl></div>`:""}
  ${t.extra==="noise"?`<div class="blk"><h4>민원 종류</h4><p style="margin:2px 0 0">층간소음 · 배드민턴장 · 엘리시안 놀이터</p></div>`:""}
  ${t.phase?`<div class="blk"><h4>세 단계로 기억하기</h4><div class="phase">
    <div><b>이사 전</b><br>승강기 사용 신청서 징구·제출, 사용 승강기·시간·차량 동선 확인<br><b>보양 전·후 확인 및 사진 촬영</b> (승강기 내부·입구·공동현관의 기존 파손 상태 포함)</div>
    <div><b>진행 중</b><br>공용 출입구와 보행로가 막히지 않는지 확인, 이상 시 보고</div>
    <div><b>종료 후</b><br>보양재 철거·잔여 물품·오염·파손 확인, 주변 청결 상태 점검·사진 촬영, 시설물 상태 확인 결과서 작성·제출</div></div></div>`:""}
- <div class="blk"><h4>어떻게 처리하나요? </h4>
+ <div class="blk"><h4>어떻게 처리하나요?</h4>
   <ol class="steps">${t.steps.map((s,i)=>`<li><label><input type="checkbox" id="st-${id}-${i}" data-step="${id}" data-i="${i}" ${done.includes(i)?"checked":""}><span>${i+1}. ${esc(s)}</span></label></li>`).join("")}</ol>
   <button class="reset" data-resetstep="${id}">체크 지우기</button></div>
  <div class="blk"><h4>주의할 점</h4><ul>${t.caution.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>
  <div class="note done"><b>완료 기준</b><br>${esc(t.done)}</div>
- ${t.check?`<div class="note check">${esc(t.check)}</div>`:""}
- ${t.link==="handover"?`<p style="margin:14px 0 0"><button class="reset" data-go="handover" style="color:var(--ink);border-color:var(--ink)">인수인계 확인표 열기 →</button></p>`:""}
+ ${pagerHtml(TASK_ORDER,id,"task",k=>TASKS[k].n)}
+ ${t.link==="handover"?`<p style="margin:14px 0 0"><button class="reset" data-go="handover" style="color:var(--ink);border-color:var(--ink)"><span class="fwd">인수인계 확인표 열기 <span class="ar">›</span></span></button></p>`:""}
  </article>`}
 
 function handover(){
@@ -504,21 +526,20 @@ function entriesHtml(){return HO.entries.map((e,i)=>`<div class="entry">
  </div>`).join("")}
 
 function emergency(){
- if(state.emg){const e=EMG[state.emg];return `<button class="back" data-back="emergency">‹ 긴급상황 목록</button>
-  <article class="emg-detail"><h3>${e.n}</h3>
+ if(state.emg){const e=EMG[state.emg];return `  <article class="emg-detail"><h3>${e.n}</h3>
   <div class="big-num">${e.nums.map(([n,l])=>`<div><b>${n}</b><small>${l}</small></div>`).join("")}</div>
   <ol class="order">${e.order.map(o=>`<li>${o}</li>`).join("")}</ol>
   <div class="dont"><h4>하지 않습니다</h4><ul>${e.dont.map(o=>`<li>${o}</li>`).join("")}</ul></div>
-  </article><p class="lede" style="margin-top:12px">신고할 때는 <b>동 · 층 · 위치 · 상황 · 다친 사람</b> 순서로 말하면 빠릅니다.</p>`}
+  </article>${pagerHtml(Object.keys(EMG),state.emg,"emg",k=>EMG[k].n)}<p class="lede" style="margin-top:12px">신고할 때는 <b>동 · 층 · 위치 · 상황 · 다친 사람</b> 순서로 말하면 빠릅니다.</p>`}
  return `<section class="view"><h2 style="color:var(--alert)">긴급상황</h2><p class="lede">일반 업무보다 먼저 합니다. 내 안전이 첫째입니다.</p>
  <div class="big-num" style="margin-bottom:14px"><div><b>119</b><small>화재 · 구급</small></div><div><b>112</b><small>범죄 · 위협</small></div></div>
  <div class="emg-list">${Object.entries(EMG).map(([k,e])=>`<button data-emg="${k}"><strong>${e.n}</strong><span>${e.s}</span></button>`).join("")}</div></section>`}
 
 function first(){
- return `<section class="view"><h2>처음 근무하시나요?</h2><p class="lede">첫 근무 전에 아래를 차례로 익혀 두세요. <span class="b b-add">권장 보충</span></p>
+ return `<section class="view"><h2>처음 근무하시나요?</h2><p class="lede">첫 근무 전에 아래를 차례로 익혀 두세요.</p>
  <div class="detail" style="border-width:1px">
  <div class="blk" style="margin-top:0"><h4>기본 장비 · 서류</h4><ul><li>출근부 (관리실, 1초소)</li><li>인수인계서 · 업무일지</li><li>차량출입 관리대장 (2종)</li><li>손전등 · 열쇠/스마트키</li><li>차단기 조작은 실제 장비 사진으로 익힙니다 <span class="b b-check">사진 필요</span></li></ul></div>
- <div class="blk"><h4>보고 순서</h4><ol style="margin:4px 0 0;padding-left:1.3em"><li>위급하면 119 / 112가 먼저</li><li>근무 책임자: 보안팀장 박재현 <span style="font-family:var(--f-mono)">010-9153-2478</span> · 보안주임 김성은 <span style="font-family:var(--f-mono)">010-2714-8283</span></li><li>관리사무소 <span style="font-family:var(--f-mono)">031-8019-9912</span> · 기전 담당자 B조 기전주임 김성욱 <span style="font-family:var(--f-mono)">010-9833-9883</span></li></ol><p class="sub">비상연락: 방재실 <span style="font-family:var(--f-mono)">070-4821-2110</span></p></div>
+ <div class="blk"><h4>보고 순서</h4><ol style="margin:4px 0 0;padding-left:1.3em"><li>위급하면 119 / 112가 먼저</li><li>근무 책임자: 보안팀장 박재현 <span style="font-family:var(--f-mono)">010-9153-2478</span> · 보안주임 김성은 <span style="font-family:var(--f-mono)">010-2714-8283</span></li><li>관리사무소 <span style="font-family:var(--f-mono)">031-8019-9912</span></li></ol><p class="sub">비상연락: 방재실 <span style="font-family:var(--f-mono)">070-4821-2110</span></p></div>
  <div class="blk"><h4>첫 근무 교육 확인</h4>
   <ul class="checklist" style="margin-top:6px">${["시간표를 처음부터 끝까지 따라가 봤다","순찰 경로를 직접 걸어봤다","차단기 정상 조작을 직접 해봤다","부표시기 위치와 보는 법을 안다","승강기 비상 연락 방법을 안다","인수인계 전달문서를 써봤다"].map((x,i)=>`<li><label><input type="checkbox" id="tr-${i}" data-tr="${i}" ${ST.get("gm-tr",[]).includes(i)?"checked":""}><span>${x}</span></label></li>`).join("")}</ul></div>
  </div>
@@ -530,7 +551,6 @@ const CONTACTS=[
  ["관리사무소","대표 번호","031-8019-9912"],
  ["근무 책임자","보안팀장 박재현","010-9153-2478"],
  ["근무 책임자","보안주임 김성은","010-2714-8283"],
- ["기전 담당자","B조 기전주임 김성욱","010-9833-9883"],
  ["비상연락","방재실","070-4821-2110"]];
 function contacts(){
  return `<section class="view"><h2>연락처 안내</h2><p class="lede">번호를 길게 누르거나 복사 버튼으로 옮겨 전화하세요. 내부 연락처이므로 외부에 전달하지 않습니다.</p>
@@ -591,14 +611,62 @@ function know(){
 
  </section>`}
 
+/* ---------- 바탕화면 바로가기 ---------- */
+const UA=(navigator.userAgent||"");
+const IN_KAKAO=/KAKAOTALK/i.test(UA);
+let pinOS=/iPhone|iPad|iPod/i.test(UA)?"ios":"android";
+function pin(){
+ const and=`<ol class="pin-steps">
+   <li><span>매뉴얼 링크를 <b>삼성 인터넷</b> 또는 <b>크롬</b>에서 엽니다.</span></li>
+   <li><span>화면 오른쪽 위(크롬) 또는 아래(삼성 인터넷)의 <span class="kbd">⋮</span> 또는 <span class="kbd">≡</span> 메뉴를 누릅니다.</span></li>
+   <li><span><b>크롬</b>: <span class="kbd">홈 화면에 추가</span>를 누릅니다.<br><b>삼성 인터넷</b>: <span class="kbd">현재 페이지 추가</span> → <span class="kbd">홈 화면</span>을 누릅니다.</span></li>
+   <li><span>이름을 <b>근무 매뉴얼</b>로 바꾸고 <span class="kbd">추가</span>를 누릅니다.</span></li>
+   <li><span>바탕화면에 생긴 아이콘을 원하는 자리로 옮겨 둡니다.</span></li></ol>`;
+ const ios=`<ol class="pin-steps">
+   <li><span>매뉴얼 링크를 <b>사파리(Safari)</b>에서 엽니다. 다른 브라우저에서는 메뉴가 다를 수 있습니다.</span></li>
+   <li><span>화면 아래 가운데의 <span class="kbd">공유 ⬆</span> 버튼을 누릅니다.</span></li>
+   <li><span>목록을 위로 밀어 <span class="kbd">홈 화면에 추가</span>를 누릅니다.</span></li>
+   <li><span>이름을 <b>근무 매뉴얼</b>로 바꾸고 오른쪽 위 <span class="kbd">추가</span>를 누릅니다.</span></li>
+   <li><span>바탕화면에 생긴 아이콘을 원하는 자리로 옮겨 둡니다.</span></li></ol>`;
+ return `<section class="view"><h2>바탕화면에 바로가기 만들기</h2><p class="lede">한 번 만들어 두면 근무 중에 아이콘만 눌러 바로 열 수 있습니다. 내 휴대폰 종류를 고르세요.</p>
+ ${IN_KAKAO?`<div class="note check" style="margin:0 0 12px"><b>지금 카카오톡 안에서 열려 있어요</b><br>카카오톡 화면에서는 바로가기를 만들 수 없습니다. 오른쪽 위 <span class="kbd">⋮</span> 또는 <span class="kbd">공유</span> → <span class="kbd">다른 브라우저로 열기</span>를 누른 뒤 아래 순서대로 하세요.</div>`:""}
+ <div class="os-tabs" role="group" aria-label="휴대폰 종류">
+  <button type="button" id="os-and" data-os="android" aria-pressed="${pinOS==="android"}">안드로이드 (갤럭시 등)</button>
+  <button type="button" id="os-ios" data-os="ios" aria-pressed="${pinOS==="ios"}">아이폰</button></div>
+ <div class="detail" style="border-width:1px">${pinOS==="ios"?ios:and}</div>
+ <div class="blk"><h4>카카오톡으로 받은 링크라면</h4><ol class="order" style="margin-top:6px">
+  <li>카톡방에서 매뉴얼 링크를 누릅니다.</li>
+  <li>열린 화면 오른쪽 위 <span class="kbd">⋮</span>(아이폰은 아래 <span class="kbd">공유</span>)를 누릅니다.</li>
+  <li><span class="kbd">다른 브라우저로 열기</span>(아이폰은 <span class="kbd">Safari로 열기</span>)를 누른 뒤 위 순서대로 합니다.</li></ol></div>
+ <div class="blk"><h4>알아두세요</h4><ul>
+  <li>바로가기는 매뉴얼 <b>링크 주소</b>를 여는 아이콘입니다. 매뉴얼 내용이 바뀌어도 바로가기를 다시 만들 필요가 없습니다.</li>
+  <li>처음 열 때 로그인 화면이 나오면, 초대받은 이메일로 한 번 로그인해 두면 됩니다.</li>
+  <li>아이콘 그림은 휴대폰이 자동으로 만들어서 글자나 기본 그림으로 보일 수 있습니다.</li></ul></div>
+ </section>`}
+
 /* ---------- 렌더 ---------- */
+let lastMenu=ST.get("gm-lastmenu",null);
+const VIEWNAME={home:"처음 화면",schedule:"오늘의 근무 일과",tasks:"업무별 처리 방법",handover:"인수인계 확인",emergency:"긴급상황",first:"처음 근무하시나요?",contacts:"연락처 안내",know:"업무 범위",pin:"바로가기 만들기"};
+const NAV=[];let histOK=false;
+const snap=()=>({view:state.view,task:state.task,emg:state.emg});
+const labelOf=s=>s.task?TASKS[s.task].n:(s.emg?EMG[s.emg].n:(VIEWNAME[s.view]||"처음 화면"));
+function nav(next,opt){opt=opt||{};
+ if(state.view===next.view&&(state.task||null)===(next.task||null)&&(state.emg||null)===(next.emg||null))opt.replace=true;
+ if(!opt.replace){NAV.push(snap());try{history.pushState({gm:NAV.length},"");histOK=true}catch(_){histOK=false}}
+ state.view=next.view;state.task=next.task||null;state.emg=next.emg||null;render();try{window.scrollTo({top:0})}catch(_){}}
+function popNav(){const s=NAV.pop()||{view:"home"};state.view=s.view;state.task=s.task||null;state.emg=s.emg||null;render();try{window.scrollTo({top:0})}catch(_){}}
+function goBack(){if(histOK&&NAV.length){try{history.back();return}catch(_){}}popNav()}
+window.addEventListener("popstate",()=>{if(NAV.length)popNav()});
 function render(){
- const v={home,schedule,tasks,handover,emergency,first,contacts,know}[state.view]||home;
- app.innerHTML=v();
- document.querySelectorAll(".dock [data-go]").forEach(b=>{const map={first:"home",contacts:"home",know:"home"};b.toggleAttribute("aria-current",false);if((map[state.view]||state.view)===b.dataset.go)b.setAttribute("aria-current","page")});
+ const v={home,schedule,tasks,handover,emergency,first,contacts,know,pin}[state.view]||home;
+ const prev=NAV.length?NAV.at(-1):{view:"home"};
+ const bar=state.view==="home"?"":`<div class="backbar"><button type="button" class="back" data-navback="1" aria-label="뒤로: ${labelOf(prev)}"><span class="ar" aria-hidden="true">‹</span>${labelOf(prev)}</button></div>`;
+ app.innerHTML=bar+v();
+ document.querySelectorAll(".dock [data-go]").forEach(b=>{const map={first:"home",contacts:"home",know:"home",pin:"home"};b.toggleAttribute("aria-current",false);if((map[state.view]||state.view)===b.dataset.go)b.setAttribute("aria-current","page")});
  if(state.view==="handover")compose();
+ if(state.view==="home"&&lastMenu){const b=[...document.querySelectorAll(".menu button,.home-pin")].find(x=>x.dataset.go===lastMenu);if(b){b.classList.add("on");b.setAttribute("aria-pressed","true")}}
 }
-function go(v){state.view=v;state.task=null;state.emg=null;render();window.scrollTo({top:0})}
+function go(v){if(v==="home"){NAV.length=0}nav({view:v},{replace:v==="home"})}
 
 function compose(){
  const out=document.getElementById("c-out");if(!out)return;
@@ -615,6 +683,7 @@ function search(q){
  const hits=[];
  Object.entries(TASKS).forEach(([id,t])=>{const hay=[t.n,t.sub,t.where,t.prep,...t.steps,...t.caution,t.check||""].join(" ");if(hay.includes(q))hits.push(`<button data-task="${id}"><b>${t.n}</b><small>업무 · ${t.sub}</small></button>`)});
  Object.entries(EMG).forEach(([id,e])=>{if((e.n+e.s+e.order.join(" ")).includes(q))hits.push(`<button data-emg="${id}"><b style="color:var(--alert)">${e.n}</b><small>긴급상황</small></button>`)});
+ if("바로가기 바탕화면 홈 화면 아이콘 설치".includes(q))hits.push(`<button data-go="pin"><b>바탕화면에 바로가기 만들기</b><small>안드로이드 · 아이폰</small></button>`);
  if("업무 범위 업무범위 대리주차 택배 주차 관리 분리배출 우편 안내문 청소 미화 제69조의2 시행령 계약서 법".includes(q))hits.push(`<button data-go="know"><b>보안대원(경비원) 업무 범위</b><small>법으로 정함 · 제69조의2 · 질의응답</small></button>`);
  if(HANDOVER.join(" ").includes(q))hits.push(`<button data-go="handover"><b>인수인계 확인</b><small>교대 전 확인표</small></button>`);
  res.innerHTML=hits.length?hits.join(""):`<small style="color:var(--muted)">‘${esc(q)}’에 맞는 업무가 없습니다. 다른 낱말로 찾아보세요.</small>`;
@@ -622,10 +691,18 @@ function search(q){
 
 document.addEventListener("click",async e=>{
  const el=e.target.closest("button");if(!el)return;
+ if(el.dataset.go&&(el.closest(".menu")||el.classList.contains("home-pin"))){
+  const to=el.dataset.go;lastMenu=to;ST.set("gm-lastmenu",to);
+  document.querySelectorAll(".menu button.on,.home-pin.on").forEach(b=>{b.classList.remove("on");b.removeAttribute("aria-pressed")});
+  el.classList.add("on");el.setAttribute("aria-pressed","true");
+  setTimeout(()=>go(to),160);return}
  if(el.dataset.go){go(el.dataset.go);return}
- if(el.dataset.task){state.view="tasks";state.task=el.dataset.task;state.emg=null;render();scrollTo({top:0});return}
- if(el.dataset.emg){state.view="emergency";state.emg=el.dataset.emg;render();scrollTo({top:0});return}
- if(el.dataset.back){state.task=null;state.emg=null;state.view=el.dataset.back;render();return}
+ if(el.dataset.os){pinOS=el.dataset.os;render();return}
+ if(el.dataset.navback){goBack();return}
+ if(el.dataset.swapTask){nav({view:"tasks",task:el.dataset.swapTask},{replace:true});return}
+ if(el.dataset.swapEmg){nav({view:"emergency",emg:el.dataset.swapEmg},{replace:true});return}
+ if(el.dataset.task){nav({view:"tasks",task:el.dataset.task});return}
+ if(el.dataset.emg){nav({view:"emergency",emg:el.dataset.emg});return}
  if(el.dataset.day){state.day=el.dataset.day;ST.set("gm-day",state.day);render();return}
  if(el.dataset.resetstep){ST.set("gm-steps-"+el.dataset.resetstep,[]);render();return}
  if(el.dataset.resetho){ST.set("gm-ho",[]);render();return}
