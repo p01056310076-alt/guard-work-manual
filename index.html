@@ -121,6 +121,15 @@ button{font:inherit;color:inherit}
 .lsec.open{border-color:var(--uniform);border-width:2px}
 .lsec.open.first{border-color:var(--signal)}
 .lsec-b{display:grid;gap:8px}
+.ph{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lrow .ph-add,.ph-add{position:relative;display:inline-flex;align-items:center;gap:6px;border:1px dashed var(--uniform);border-radius:6px;padding:10px 14px;font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;background:var(--surface)}
+.ph-add::before{content:"+";font-family:var(--f-mono);font-size:18px;color:var(--uniform)}
+.ph-add input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.ph-thumb{position:relative;width:64px;height:64px;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.ph-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.ph-thumb button{position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;border:none;background:var(--alert);color:var(--alert-ink);font-weight:800;line-height:1;cursor:pointer}
+.ph-n{font-size:13px;font-weight:700;color:var(--uniform)}
+.send .kakao.photo{background:var(--uniform);color:var(--uniform-ink)}
 .lsec-h .num{flex:none;width:28px;height:28px;border-radius:50%;background:var(--uniform);color:var(--uniform-ink);display:grid;place-items:center;font-family:var(--f-mono);font-size:15px}
 .lsec-h .cnt{font-size:13px;font-weight:700;color:var(--uniform);background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:1px 10px}
 .lsec .add-btn{padding:10px;font-size:14px}
@@ -698,10 +707,14 @@ let LG=ST.get("gm-log2",null)||blankLog();
 const LOPEN=new Set();
 if(!Array.isArray(LG.rows))LG=blankLog();
 const saveLG=()=>ST.set("gm-log2",LG);
-LG.rows.forEach(r=>{if(LMAP[r.cat])r.cat=LMAP[r.cat];if(!LCATS.includes(r.cat))r.cat="기타 및 참고사항"});
+const rid=()=>Math.random().toString(36).slice(2,9);
+const PH={};
+const phOf=r=>(r&&r.id&&PH[r.id])||[];
+LG.rows.forEach(r=>{if(!r.id)r.id=rid();if(LMAP[r.cat])r.cat=LMAP[r.cat];if(!LCATS.includes(r.cat))r.cat="기타 및 참고사항"});
 if(LG.note&&LG.note.trim()){LG.rows.unshift({time:"",cat:"지시사항 및 전달사항",what:LG.note,etc:""});LG.note="";saveLG()}
 function logView(){
- LCATS.forEach(c=>{if(!LG.rows.some(r=>r.cat===c))LG.rows.push({time:"",cat:c,what:"",etc:""})});
+ LCATS.forEach(c=>{if(!LG.rows.some(r=>r.cat===c))LG.rows.push({id:rid(),time:"",cat:c,what:"",etc:""})});
+ LG.rows.forEach(r=>{if(!r.id)r.id=rid()});
  return `<section class="view"><h2>초소 업무일지</h2><p class="lede">종이 업무일지와 같은 내용을 휴대폰으로 씁니다. 1번~7번 중 해당 버튼을 누르면 버튼 아래에 그 업무 칸이 열립니다. 업무내용을 쓰기 시작하면 시간이 자동으로 들어가고, 더 쓸 일이 있으면 "한 줄 더"를 누르세요. 다 쓰면 <b style="color:var(--ink)">카톡으로 보내기</b>를 누르세요.</p>
  <form class="composer" id="logf">
   <div class="log-head">
@@ -719,11 +732,13 @@ function logView(){
     ${rs.length>1||(r.what||"").trim()||(r.etc||"").trim()?`<div class="lrow-head"><span>${rs.length>1?`${ci+1}-${n+1}`:""}</span><button type="button" class="del-btn" data-dellog="${i}">${rs.length>1?"이 줄 삭제":"지우기"}</button></div>`:""}
     <label for="lr${i}-t" style="max-width:9em">시간<input id="lr${i}-t" type="time" data-lr="${i}" data-f="time" value="${esc(r.time)}"></label>
     <label for="lr${i}-w">업무내용<textarea id="lr${i}-w" data-lr="${i}" data-f="what" placeholder="${LPH[c]||"무엇을 했는지 적어 주세요"}">${esc(r.what)}</textarea></label>
-    <label for="lr${i}-e">기타사항<input id="lr${i}-e" data-lr="${i}" data-f="etc" value="${esc(r.etc)}" placeholder="보고 대상, 사진 촬영 여부 등"></label>
+    <label for="lr${i}-e">기타사항<input id="lr${i}-e" data-lr="${i}" data-f="etc" value="${esc(r.etc)}" placeholder="보고 대상 등"></label>
+    <div class="ph"><label class="ph-add" for="lp${i}">사진 첨부<input id="lp${i}" type="file" accept="image/*" multiple data-lphoto="${i}"></label>${phOf(r).map((x,k)=>`<span class="ph-thumb"><img src="${x.url}" alt="첨부 사진 ${k+1}"><button type="button" data-delph="${i}" data-k="${k}" aria-label="사진 ${k+1} 삭제">×</button></span>`).join("")}${phOf(r).length?`<span class="ph-n">${phOf(r).length}장</span>`:""}</div>
    </div>`).join("")}
    <button type="button" class="add-btn" data-addlog="${c}">+ ${c} 한 줄 더</button></div></section>`}).join("")}</div>
   <div class="out" id="lg-out"></div>
-  <div class="send"><button type="button" class="kakao" data-share="lg-out" data-title="초소 업무일지">카톡으로 보내기</button><span class="send-msg" id="lg-msg"></span></div>
+  <div class="send"><button type="button" class="kakao" data-share="lg-out" data-title="초소 업무일지">① 업무일지 글 카톡 보내기</button><span class="send-msg" id="lg-msg"></span></div>
+  ${(()=>{const n=LG.rows.reduce((a,r)=>a+phOf(r).length,0);return n?`<div class="send"><button type="button" class="kakao photo" data-sharephotos="1">② 사진 ${n}장 카톡 보내기</button><span class="send-msg" id="lg-pmsg"></span></div><p class="lede" style="margin:0">글을 먼저 보내고, 같은 카톡방에 사진을 이어서 보내세요. 글 안에 어느 업무의 사진인지 [사진 ○장]으로 표시됩니다.</p>`:""})()}
   <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="copy" data-copy="lg-out" data-label="업무일지 복사">업무일지 복사</button><button type="button" class="copy" data-clearlog="1" data-label="새 업무일지 (모두 지우기)">새 업무일지 (모두 지우기)</button></div>
   <p class="lede" style="margin:0">쓴 내용은 이 휴대폰에만 저장됩니다. 입주민은 이름·전화번호 대신 동·호수까지만 적어 주세요.</p>
  </form></section>`}
@@ -735,8 +750,30 @@ function logCompose(){
  const L=[`[업무일지] ${LG.post}${LG.shift?" · "+LG.shift:""}`,`${dl} / 근무자: ${LG.name||"○○○"}`];
  LCATS.forEach((c,ci)=>{const rs=LG.rows.filter(r=>r.cat===c&&(r.what||"").trim()).sort((a,b)=>(a.time||"").localeCompare(b.time||""));
   L.push("",`${ci+1}. ${c}${rs.length?` (${rs.length}건)`:""}`);
-  if(!rs.length)L.push("- 없음");else rs.forEach(r=>L.push(`- ${r.time||"--:--"} ${r.what.trim()}${(r.etc||"").trim()?` [기타사항: ${r.etc.trim()}]`:""}`))});
+  if(!rs.length)L.push("- 없음");else rs.forEach(r=>L.push(`- ${r.time||"--:--"} ${r.what.trim()}${(r.etc||"").trim()?` [기타사항: ${r.etc.trim()}]`:""}${phOf(r).length?` [사진 ${phOf(r).length}장]`:""}`))});
+ const tp=LG.rows.reduce((a,r)=>a+phOf(r).length,0);if(tp)L.push("",`※ 첨부 사진 ${tp}장 (이어서 전송)`);
  out.textContent=L.join("\n");
+}
+async function shrink(file){
+ try{const url=URL.createObjectURL(file);const img=await new Promise((ok,no)=>{const im=new Image();im.onload=()=>ok(im);im.onerror=no;im.src=url});
+  const M=1280,sc=Math.min(1,M/Math.max(img.naturalWidth,img.naturalHeight));const c=document.createElement("canvas");c.width=Math.round(img.naturalWidth*sc);c.height=Math.round(img.naturalHeight*sc);
+  c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);
+  const blob=await new Promise(ok=>c.toBlob(ok,"image/jpeg",0.82));return blob||file}catch(_){return file}}
+async function addPhotos(input){
+ const r=LG.rows[+input.dataset.lphoto];if(!r)return;if(!r.id)r.id=rid();
+ const list=PH[r.id]||(PH[r.id]=[]);
+ for(const f of [...input.files]){const b=await shrink(f);list.push({blob:b,url:URL.createObjectURL(b)})}
+ if((r.what||"").trim()===""&&!r.time){r.time=nowHM()}
+ saveLG();render();
+}
+function photoFiles(){
+ const out=[];LCATS.forEach((c,ci)=>{LG.rows.filter(r=>r.cat===c).sort((a,b)=>lOrder(a)-lOrder(b)).forEach((r,n)=>phOf(r).forEach((x,k)=>{
+  out.push(new File([x.blob],`업무일지_${LG.date||""}_${ci+1}-${n+1}_${k+1}.jpg`,{type:"image/jpeg"}))}))});return out}
+async function sharePhotos(btn){
+ const msg=document.getElementById("lg-pmsg");const say=t=>{if(msg)msg.textContent=t};
+ const files=photoFiles();if(!files.length)return;
+ if(navigator.canShare&&navigator.canShare({files})){try{await navigator.share({files,title:"업무일지 사진"});say("보낼 곳에서 카카오톡을 고르세요.");return}catch(e){if(e&&e.name==="AbortError"){say("");return}}}
+ say("이 화면에서는 사진을 바로 보낼 수 없어요. 카톡방에서 ＋ → 앨범으로 사진을 보내 주세요.");
 }
 async function shareOut(btn){
  const el=document.getElementById(btn.dataset.share);if(!el)return;const text=el.textContent;
@@ -802,12 +839,14 @@ document.addEventListener("click",async e=>{
  if(el.dataset.resetho){ST.set("gm-ho",[]);render();return}
  if(el.dataset.jump){const t=document.getElementById(el.dataset.jump);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});return}
  if(el.dataset.share){shareOut(el);return}
+ if(el.dataset.sharephotos){sharePhotos(el);return}
+ if(el.dataset.delph!=null){const r=LG.rows[+el.dataset.delph];const l=phOf(r);const x=l.splice(+el.dataset.k,1)[0];if(x)URL.revokeObjectURL(x.url);render();return}
  if(el.dataset.shift){LG.shift=LG.shift===el.dataset.shift?"":el.dataset.shift;saveLG();render();return}
  if(el.dataset.togglelog){const c=el.dataset.togglelog;if(LOPEN.has(c))LOPEN.delete(c);else LOPEN.add(c);render();if(LOPEN.has(c)){const k=LCATS.indexOf(c);const sec=document.getElementById("lsec-"+k);if(sec){sec.scrollIntoView({block:"start",behavior:"smooth"});const ta=sec.querySelector("textarea");if(ta&&!ta.value)ta.focus({preventScroll:true})}}return}
- if(el.dataset.addlog){LG.rows.push({time:"",cat:el.dataset.addlog,what:"",etc:""});saveLG();render();const n=document.getElementById("lr"+(LG.rows.length-1)+"-w");if(n){n.scrollIntoView({block:"center"});n.focus()}return}
- if(el.dataset.dellog){LG.rows.splice(+el.dataset.dellog,1);saveLG();render();return}
+ if(el.dataset.addlog){LG.rows.push({id:rid(),time:"",cat:el.dataset.addlog,what:"",etc:""});saveLG();render();const n=document.getElementById("lr"+(LG.rows.length-1)+"-w");if(n){n.scrollIntoView({block:"center"});n.focus()}return}
+ if(el.dataset.dellog){const dr=LG.rows[+el.dataset.dellog];if(dr&&PH[dr.id]){PH[dr.id].forEach(x=>URL.revokeObjectURL(x.url));delete PH[dr.id]}LG.rows.splice(+el.dataset.dellog,1);saveLG();render();return}
  if(el.dataset.clearlog){const k=el.dataset.armed;if(!k){el.dataset.armed="1";el.textContent="한 번 더 누르면 모두 지워집니다";setTimeout(()=>{if(el.isConnected){delete el.dataset.armed;el.textContent=el.dataset.label}},3000);return}
-  LG={post:LG.post,shift:LG.shift,date:todayISO(),name:LG.name,rows:[],note:""};saveLG();render();return}
+  Object.keys(PH).forEach(k=>{PH[k].forEach(x=>URL.revokeObjectURL(x.url));delete PH[k]});LG={post:LG.post,shift:LG.shift,date:todayISO(),name:LG.name,rows:[],note:""};saveLG();render();return}
  if(el.dataset.copy){const t=document.getElementById(el.dataset.copy).textContent.replace(/[“”]/g,"");
   try{await navigator.clipboard.writeText(t);el.textContent="복사했습니다"}catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById(el.dataset.copy));const s=getSelection();s.removeAllRanges();s.addRange(r);el.textContent=el.dataset.label?"선택됨":"선택됨 · 길게 눌러 복사"}
   setTimeout(()=>{el.textContent=el.dataset.label||"문장 복사"},1800)}
@@ -816,6 +855,7 @@ document.addEventListener("change",e=>{
  const t=e.target;
  if(t.dataset.step){const k="gm-steps-"+t.dataset.step;let a=ST.get(k,[]);const i=+t.dataset.i;a=t.checked?[...new Set([...a,i])]:a.filter(x=>x!==i);ST.set(k,a)}
  if(t.dataset.ho){let a=ST.get("gm-ho",[]);const i=+t.dataset.ho;a=t.checked?[...new Set([...a,i])]:a.filter(x=>x!==i);ST.set("gm-ho",a);document.getElementById("hoprog").textContent=`${a.length} / ${HANDOVER.length} 확인`}
+ if(t.dataset.lphoto!=null){addPhotos(t);return}
  if(t.dataset.lg){LG[t.dataset.lg]=t.value;saveLG();logCompose()}
  if(t.dataset.lr!=null){const r=LG.rows[+t.dataset.lr];if(r){r[t.dataset.f]=t.value;saveLG();if(t.dataset.f==="cat"||t.dataset.f==="time")render();else logCompose()}}
  if(t.dataset.tr){let a=ST.get("gm-tr",[]);const i=+t.dataset.tr;a=t.checked?[...new Set([...a,i])]:a.filter(x=>x!==i);ST.set("gm-tr",a)}
